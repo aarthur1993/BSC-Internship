@@ -75,17 +75,19 @@ class NoteViewController: UIViewController  {
         
         let actionCancel = UIAlertAction(title: "Пропустить", style: .default) { [weak self]
             (actionCancel) in
-           
-            self?.textTetView.becomeFirstResponder()
-            self?.dismiss(animated: true)
+            guard let self = self else {return}
+            
+            self.textTetView.becomeFirstResponder()
+            self.dismiss(animated: true)
         }
         
         let actionAdd = UIAlertAction(title: "Изменить", style: .default) { [weak self] (actionAdd) in
-            
             let textFilds = alertControl.textFields?.first?.text
            
-            self?.navigationItem.title = textFilds
-            self?.textTetView.becomeFirstResponder()
+            guard let self = self else {return}
+            
+            self.navigationItem.title = textFilds
+            self.textTetView.becomeFirstResponder()
         }
         alertControl.addTextField { textField in
             textField.placeholder = "Введите название title"
