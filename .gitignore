@@ -93,3 +93,4 @@ BasicNote/Podfile.lock
 BasicNote/Pods/
 *.xcworkspacedata
 BasicNote/BasicNote.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+BasicNote/Podfile
