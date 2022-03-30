@@ -7,112 +7,103 @@
 
 import UIKit
 
-class NoteViewController: UIViewController  {
-   
-    //MARK: -Internal properties defaults
+class NoteViewController: UIViewController {
+    // MARK: - Internal properties defaults
     private let defaults = UserDefaults.standard
-    
-    //MARK: -Internal properties rightBarButtonItem
+    // MARK: - Internal properties rightBarButtonItem
     private let rightBarButtonItem = UIBarButtonItem()
-
-    //MARK: -Internal properties isEditingMod
+    // MARK: - Internal properties isEditingMod
     private var isEditingMod = false
-    
-    //MARK: -Internal properties textTetView
-    private let textTetView: UITextView = {
-        let text = UITextView()
-         text.textColor = UIColor.black
-         text.layer.shadowRadius = 3
-         text.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
-         text.layer.borderWidth = 1
-         text.textAlignment = .center
-         text.layer.cornerRadius = 30
-         text.layer.shadowColor = UIColor.black.cgColor
-         text.layer.shadowOpacity = 2
-         text.layer.backgroundColor = UIColor.opaqueSeparator.cgColor
-         text.layer.borderColor = UIColor.black.cgColor
-        return text
+    // MARK: - Internal properties textField
+    private let textField: UITextField = {
+        let textF = UITextField()
+         textF.textColor = UIColor.black
+         textF.placeholder = "Заголовок"
+         textF.borderStyle = .line
+         textF.font = UIFont.systemFont(ofSize: 22.0, weight: UIFont.Weight.bold)
+        return textF
     }()
-    
-    //MARK: -Live cycle
+    private let textViewData: UITextView = {
+        let textView = UITextView()
+         textView.textColor = UIColor.black
+         textView.becomeFirstResponder()
+         textView.layer.shadowRadius = 3
+         textView.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
+         textView.layer.borderWidth = 1
+         textView.textAlignment = .center
+         textView.layer.cornerRadius = 30
+         textView.layer.shadowOffset = .init(width: 2.0, height: 4.0)
+         textView.layer.shadowColor = UIColor.black.cgColor
+         textView.layer.shadowOpacity = 2
+         textView.layer.backgroundColor = UIColor.opaqueSeparator.cgColor
+         textView.layer.borderColor = UIColor.black.cgColor
+        return textView
+    }()
+
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemGray5
-       
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0, weight: UIFont.Weight.bold)]
-        
-        view.addSubview(textTetView)
-        textTetView.text = defaults.string(forKey: "textW")
-        
-        constraintTextView()
         buttonRightSetting()
-        navigationTitleRedact()
-    }
-    
-    //MARK: -Method constraintTextView
+        view.backgroundColor = .white
+        view.addSubview(textField)
+        view.addSubview(textViewData)
+        textViewData.text = defaults.string(forKey: "textW")
+        constraintTextView()
+   }
+    // MARK: - Method constraintTextView
     func constraintTextView() {
-        textTetView.translatesAutoresizingMaskIntoConstraints = false
-        
-        textTetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        textTetView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0).isActive = true
-        textTetView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: +1).isActive = true
-        textTetView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-       textTetView.isUserInteractionEnabled = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        textField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: +10).isActive = true
+        textField.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                        constant: -650).isActive = true
+
+        textViewData.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        textViewData.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        textViewData.centerYAnchor.constraint(equalTo: view.centerYAnchor,
+                                       constant: -100).isActive = true
+        textViewData.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: +60).isActive = true
+
+        textViewData.translatesAutoresizingMaskIntoConstraints = false
     }
-   
-    //MARK: - Method buttonRightSetting
+    // MARK: - Method buttonRightSetting
     func buttonRightSetting() {
-        rightBarButtonItem.title = "Добавить"
+        rightBarButtonItem.title = "Готово"
         rightBarButtonItem.tintColor = .black
         rightBarButtonItem.target = self
-        rightBarButtonItem.action = #selector(rightBarButtonTapAndSaveUserDefault(_ :))
+        rightBarButtonItem.action = #selector(rightBarButtonTapAndSaveUserDefault)
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
-    
-    //MARK: - Method navigationTitleRedact
-    func navigationTitleRedact() {
-        let alertControl = UIAlertController(title: "BasicNote", message: "Хотите поменять title?", preferredStyle: .alert)
-        
-        let actionCancel = UIAlertAction(title: "Пропустить", style: .default) { [weak self]
-            (actionCancel) in
-            guard let self = self else {return}
-            
-            self.textTetView.becomeFirstResponder()
-            self.dismiss(animated: true)
-        }
-        
-        let actionAdd = UIAlertAction(title: "Изменить", style: .default) { [weak self] (actionAdd) in
-            let textFilds = alertControl.textFields?.first?.text
-           
-            guard let self = self else {return}
-            
-            self.navigationItem.title = textFilds
-            self.textTetView.becomeFirstResponder()
-        }
-        alertControl.addTextField { textField in
-            textField.placeholder = "Введите название title"
-            textField.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        }
-        alertControl.addAction(actionAdd)
-        alertControl.addAction(actionCancel)
-        present(alertControl, animated: true, completion: nil)
-    }
-    
-    //MARK: - Method rightBarButtonTapAndSaveUserDefault
+
+    // MARK: - Method rightBarButtonTapAndSaveUserDefault
     @objc func rightBarButtonTapAndSaveUserDefault(_ sender: Any) {
-            let textW = textTetView.text
+            let textW = textViewData.text
               isEditingMod = !isEditingMod
-              textTetView.isUserInteractionEnabled = isEditingMod
-            
-                if isEditingMod == true {
+        textViewData.isUserInteractionEnabled = isEditingMod
+
+                if isEditingMod == false {
                      defaults.set(textW, forKey: "textW")
-                     rightBarButtonItem.title = "Добавить"
-                     textTetView.becomeFirstResponder()
-                } else if isEditingMod == false {
-                   // defaults.removeObject(forKey: "textW")
-                     rightBarButtonItem.title = "Изменить"
-                     textTetView.resignFirstResponder()
+                     rightBarButtonItem.title = "Готово"
+                    textField.isUserInteractionEnabled = true
+                    textField.resignFirstResponder()
+                    textViewData.resignFirstResponder()
+                    textViewData.translatesAutoresizingMaskIntoConstraints = false
+
+                    textViewData.widthAnchor.constraint(equalToConstant: 350).isActive = true
+                    textViewData.heightAnchor.constraint(equalToConstant: 350).isActive = true
+                    textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+                    textViewData.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+                    textViewData.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                                   constant: +60).isActive = true
+                    textViewData.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                    constant: -20).isActive = true
+
+                    textViewData.translatesAutoresizingMaskIntoConstraints = false
+                    textViewData.isUserInteractionEnabled = true
         }
     }
 }
-
