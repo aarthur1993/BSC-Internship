@@ -19,24 +19,17 @@ class NoteViewController: UIViewController {
         let textF = UITextField()
          textF.textColor = UIColor.black
          textF.placeholder = "Заголовок"
-         textF.borderStyle = .line
+         textF.textAlignment = .center
          textF.font = UIFont.systemFont(ofSize: 22.0, weight: UIFont.Weight.bold)
         return textF
     }()
     private let textViewData: UITextView = {
         let textView = UITextView()
          textView.textColor = UIColor.black
+         textView.textAlignment = .left
          textView.becomeFirstResponder()
          textView.layer.shadowRadius = 3
          textView.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
-         textView.layer.borderWidth = 1
-         textView.textAlignment = .center
-         textView.layer.cornerRadius = 30
-         textView.layer.shadowOffset = .init(width: 2.0, height: 4.0)
-         textView.layer.shadowColor = UIColor.black.cgColor
-         textView.layer.shadowOpacity = 2
-         textView.layer.backgroundColor = UIColor.opaqueSeparator.cgColor
-         textView.layer.borderColor = UIColor.black.cgColor
         return textView
     }()
 
@@ -51,7 +44,7 @@ class NoteViewController: UIViewController {
     // MARK: - Method constraintTextView
     func constraintTextView() {
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        textField.widthAnchor.constraint(equalToConstant: 350).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -67,13 +60,14 @@ class NoteViewController: UIViewController {
                                        constant: -100).isActive = true
         textViewData.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                        constant: +60).isActive = true
+        textViewData.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                        constant: 0).isActive = true
 
         textViewData.translatesAutoresizingMaskIntoConstraints = false
     }
     // MARK: - Method buttonRightSetting
     func buttonRightSetting() {
         rightBarButtonItem.title = "Готово"
-        rightBarButtonItem.tintColor = .black
         rightBarButtonItem.target = self
         rightBarButtonItem.action = #selector(rightBarButtonTapAndSaveUserDefault)
         navigationItem.rightBarButtonItem = rightBarButtonItem
@@ -92,18 +86,6 @@ class NoteViewController: UIViewController {
                     textField.resignFirstResponder()
                     textViewData.resignFirstResponder()
                     textViewData.translatesAutoresizingMaskIntoConstraints = false
-
-                    textViewData.widthAnchor.constraint(equalToConstant: 350).isActive = true
-                    textViewData.heightAnchor.constraint(equalToConstant: 350).isActive = true
-                    textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-                    textViewData.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-                    textViewData.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                                   constant: +60).isActive = true
-                    textViewData.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -20).isActive = true
-
-                    textViewData.translatesAutoresizingMaskIntoConstraints = false
-                    textViewData.isUserInteractionEnabled = true
         }
     }
 }
