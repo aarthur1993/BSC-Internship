@@ -12,11 +12,10 @@ enum Message {
     case cancel(message: String)
 }
 struct NotificationManager {
-    var text: String
+    var title: String
+    var textview: String
     var notification: Message
-    var reminderDate: Date?
     mutating func funcCancel(_ message: String) {
         notification = .cancel(message: message)
-        reminderDate = nil
     }
 }

@@ -128,20 +128,24 @@ class NoteViewController: UIViewController {
     }
     // MARK: - Method notificationMessage
     @objc func notificationMessage() {
-        var _: () = getDateFromPicker(NotificationManager(text: textField.text ?? "Error", notification: .order,
-            reminderDate: .distantFuture))
+        getDateFromPicker(NotificationManager(title: textField.text ?? "Error",
+                                              textview: textViewData.text,
+                                              notification: .order))
     }
     // MARK: - Method getDateFromPicker
     func getDateFromPicker(_ dailyMessage: NotificationManager) {
             let dateformatter = DateFormatter()
             dateformatter.dateFormat = "MM-dd-yyyy"
         switch dailyMessage.notification {
-        case .order :
-            guard dailyMessage.reminderDate != nil else {return}
-            print("Heading: \(dailyMessage.text) , From Data: \(dateformatter.string(from: (datePicker.date)))")
+        case .order:
+            print("""
+                  Heading: \(dailyMessage.title),
+                  From Data: \(dateformatter.string(from: (datePicker.date))),
+                  textView: \(dailyMessage.textview)
+                  """)
         case .cancel(let message):
             print("daily canceled because \(message)")
-        }
+    }
   }
 }
 // MARK: - extension NoteViewController
