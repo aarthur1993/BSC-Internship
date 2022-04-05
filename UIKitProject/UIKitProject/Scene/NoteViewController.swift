@@ -16,7 +16,7 @@ class NoteViewController: UIViewController {
         pickerData.preferredDatePickerStyle = .wheels
         pickerData.sizeToFit()
         pickerData.datePickerMode = .date
-        pickerData.addTarget(self, action: #selector(doneAction), for: .valueChanged)
+        pickerData.addTarget(self, action: #selector(notificationMessage), for: .valueChanged)
         return pickerData
     }()
     // MARK: - private properties rightBarButtonItem
@@ -52,8 +52,8 @@ class NoteViewController: UIViewController {
          textView.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
         return textView
     }()
-    // MARK: - fileprivate properties textViewText
-    fileprivate var textViewText: UITextView? {
+    // MARK: - private properties textViewText
+    private var textViewText: UITextView? {
            get {
                if textViewData.text.isEmpty == true {
                    methodAlert()
@@ -126,15 +126,22 @@ class NoteViewController: UIViewController {
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
     }
-    // MARK: - Method doneAction
-    @objc func doneAction() {
-            getDateFromPicker()
+    // MARK: - Method notificationMessage
+    @objc func notificationMessage() {
+        var _: () = getDateFromPicker(NotificationManager(text: textField.text ?? "Error", notification: .order,
+            reminderDate: .distantFuture))
     }
     // MARK: - Method getDateFromPicker
-    func getDateFromPicker() {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM-dd-yyyy"
-            textFieldDate.text = formatter.string(from: datePicker.date)
+    func getDateFromPicker(_ dailyMessage: NotificationManager) {
+            let dateformatter = DateFormatter()
+            dateformatter.dateFormat = "MM-dd-yyyy"
+        switch dailyMessage.notification {
+        case .order :
+            guard dailyMessage.reminderDate != nil else {return}
+            print("Heading: \(dailyMessage.text) , From Data: \(dateformatter.string(from: (datePicker.date)))")
+        case .cancel(let message):
+            print("daily canceled because \(message)")
+        }
   }
 }
 // MARK: - extension NoteViewController
