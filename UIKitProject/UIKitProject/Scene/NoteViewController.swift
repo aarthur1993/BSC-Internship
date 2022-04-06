@@ -8,22 +8,18 @@
 import UIKit
 
 class NoteViewController: UIViewController {
-    // MARK: - private properties defaults
     private let defaults = UserDefaults.standard
-    // MARK: - lazy properties datePicker
     lazy var datePicker: UIDatePicker = {
         let pickerData = UIDatePicker()
+        pickerData.translatesAutoresizingMaskIntoConstraints = false
         pickerData.preferredDatePickerStyle = .wheels
         pickerData.sizeToFit()
         pickerData.datePickerMode = .date
         pickerData.addTarget(self, action: #selector(notificationMessage), for: .valueChanged)
         return pickerData
     }()
-    // MARK: - private properties rightBarButtonItem
     private let rightBarButtonItem = UIBarButtonItem()
-    // MARK: - private properties isEditingMod
     private var isEditingMod = false
-    // MARK: - private properties textField
     private let textField: UITextField = {
         let textF = UITextField()
          textF.textColor = UIColor.black
@@ -32,7 +28,6 @@ class NoteViewController: UIViewController {
          textF.font = UIFont.systemFont(ofSize: 22.0, weight: UIFont.Weight.bold)
         return textF
     }()
-    // MARK: - private properties textFieldDate
     private var textFieldDate: UITextField = {
          let dateText = UITextField()
          dateText.borderStyle = .roundedRect
@@ -41,7 +36,6 @@ class NoteViewController: UIViewController {
          dateText.leftViewMode = UITextField.ViewMode.always
          return dateText
      }()
-    // MARK: - private properties textViewData
     private var textViewData: UITextView = {
         let textView = UITextView()
          textView.textColor = UIColor.black
@@ -52,7 +46,6 @@ class NoteViewController: UIViewController {
          textView.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
         return textView
     }()
-    // MARK: - private properties textViewText
     private var textViewText: UITextView? {
            get {
                if textViewData.text.isEmpty == true {
@@ -67,10 +60,10 @@ class NoteViewController: UIViewController {
                textViewData = newValue
            }
     }
-    // MARK: - LiveCycle
+    // MARK: - Inheritance
      override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemGray4
         view.addSubview(textField)
         view.addSubview(textFieldDate)
         view.addSubview(textViewData)
@@ -79,78 +72,71 @@ class NoteViewController: UIViewController {
         textViewData.text = defaults.string(forKey: "textW")
         textFieldDate.inputView = datePicker
     }
-    // MARK: - Method constraint
+    // MARK: - Methods constraint
     func constraint() {
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                           constant: 0).isActive = true
+        textField.topAnchor.constraint(equalTo: view.topAnchor,
+                                       constant: +80).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                  constant: +10).isActive = true
-        textField.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                    constant: -760).isActive = true
+        textField.widthAnchor.constraint(equalToConstant: 380).isActive = true
+
         textFieldDate.translatesAutoresizingMaskIntoConstraints = false
-        textFieldDate.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        textFieldDate.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                           constant: 0).isActive = true
+        textFieldDate.topAnchor.constraint(equalTo: view.topAnchor,
+                                       constant: +135).isActive = true
         textFieldDate.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        textFieldDate.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textFieldDate.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        textFieldDate.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                           constant: +70).isActive = true
-        textFieldDate.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -700).isActive = true
+        textFieldDate.widthAnchor.constraint(equalToConstant: 380).isActive = true
 
-        textViewData.widthAnchor.constraint(equalToConstant: 350).isActive = true
-        textViewData.heightAnchor.constraint(equalToConstant: 350).isActive = true
-        textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textViewData.centerYAnchor.constraint(equalTo: view.centerYAnchor,
-                                   constant: -100).isActive = true
-        textViewData.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                   constant: +130).isActive = true
-        textViewData.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                    constant: 0).isActive = true
-
-         textViewData.translatesAutoresizingMaskIntoConstraints = false
+        textViewData.translatesAutoresizingMaskIntoConstraints = false
+        textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                              constant: 0).isActive = true
+        textViewData.topAnchor.constraint(equalTo: view.topAnchor,
+                                          constant: +190).isActive = true
+        textViewData.heightAnchor.constraint(equalToConstant: 560).isActive = true
+        textViewData.widthAnchor.constraint(equalToConstant: 380).isActive = true
    }
-   // MARK: - Method buttonRightSetting
+   // MARK: - Methods buttonRightSetting
    func buttonRightSetting() {
       rightBarButtonItem.title = "Готово"
       rightBarButtonItem.target = self
       rightBarButtonItem.action = #selector(rightBarButtonTapAndSaveUserDefault)
       navigationItem.rightBarButtonItem = rightBarButtonItem
    }
-    // MARK: - Method methodAlert
+    // MARK: - Methods methodAlert
     func methodAlert() {
         let alertController = UIAlertController(title: "Danger Error :)", message: "", preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "Вы не заполнили заметку!", style: .cancel, handler: nil)
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
     }
-    // MARK: - Method notificationMessage
+    // MARK: - Methods notificationMessage
     @objc func notificationMessage() {
         getDateFromPicker(NotificationManager(title: textField.text ?? "Error",
                                               textview: textViewData.text,
                                               notification: .order))
     }
-    // MARK: - Method getDateFromPicker
+    // MARK: - Methods getDateFromPicker
     func getDateFromPicker(_ dailyMessage: NotificationManager) {
             let dateformatter = DateFormatter()
             dateformatter.dateFormat = "MM-dd-yyyy"
+            textFieldDate.text = dateformatter.string(from: (datePicker.date))
         switch dailyMessage.notification {
         case .order:
             print("""
                   Heading: \(dailyMessage.title),
                   From Data: \(dateformatter.string(from: (datePicker.date))),
-                  textView: \(dailyMessage.textview)
+                  NoteText: \(dailyMessage.textview)
                   """)
         case .cancel(let message):
             print("daily canceled because \(message)")
     }
   }
 }
-// MARK: - extension NoteViewController
+// MARK: - Methods rightBarButtonTapAndSaveUserDefault
 extension NoteViewController {
-    // MARK: - Method @objc rightBarButtonTapAndSaveUserDefault
     @objc func rightBarButtonTapAndSaveUserDefault(_ sender: Any) {
         let textW = textViewData.text
         if textViewData.text.isEmpty == true {
