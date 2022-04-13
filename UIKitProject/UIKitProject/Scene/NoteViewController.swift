@@ -7,148 +7,223 @@
 
 import UIKit
 
-class NoteViewController: UIViewController {
-    private let defaults = UserDefaults.standard
-    lazy var datePicker: UIDatePicker = {
-        let pickerData = UIDatePicker()
-        pickerData.preferredDatePickerStyle = .wheels
-        pickerData.sizeToFit()
-        pickerData.datePickerMode = .date
-        pickerData.addTarget(self, action: #selector(notificationMessage), for: .valueChanged)
-        return pickerData
+class NoteViewOneGesture: UIViewController {
+    var delegateProtocol: SomeProtocol?
+    @objc let barButton = UIBarButtonItem()
+    let label: UILabel = {
+        let lab = UILabel()
+        lab.isHidden = true
+        lab.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
+        lab.textColor = .black
+        return lab
     }()
-    private let rightBarButtonItem = UIBarButtonItem()
-    private var isEditingMod = false
-    private let textField: UITextField = {
-        let textF = UITextField()
-         textF.textColor = UIColor.black
-         textF.placeholder = "Заголовок"
-         textF.textAlignment = .center
-         textF.font = UIFont.systemFont(ofSize: 22.0, weight: UIFont.Weight.bold)
-        return textF
+    let scrolls: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
     }()
-    private var textFieldDate: UITextField = {
-         let dateText = UITextField()
-         dateText.borderStyle = .roundedRect
-         dateText.placeholder = "Data add"
-         dateText.textAlignment = .center
-         dateText.leftViewMode = UITextField.ViewMode.always
-         return dateText
-     }()
-    private var textViewData: UITextView = {
+    var time: UITextField = {
+        let textTime = UITextField()
+        textTime.translatesAutoresizingMaskIntoConstraints = false
+        textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
+        textTime.textAlignment = .center
+        textTime.textColor = .red
+        textTime.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        textTime.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
+        return textTime
+    }()
+     var notes: UITextField = {
+        let textTitle = UITextField()
+         textTitle.translatesAutoresizingMaskIntoConstraints = false
+         textTitle.placeholder = "Введите название"
+         textTitle.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
+         textTitle.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 1254/255, alpha: 1)
+         textTitle.textAlignment = .left
+         textTitle.font = UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.medium)
+         textTitle.text = ""
+        return textTitle
+    }()
+     var textT: UITextView = {
         let textView = UITextView()
-         textView.textColor = UIColor.black
-         textView.textAlignment = .left
+         textView.translatesAutoresizingMaskIntoConstraints = false
          textView.becomeFirstResponder()
-         textView.layer.cornerRadius = 10
-         textView.layer.shadowRadius = 3
-         textView.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
+         textView.textColor = UIColor.black
+         textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+         textView.textAlignment = .center
+         textView.text = """
+        """
+         textView.textAlignment = .left
+         textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
         return textView
     }()
-    private var textViewText: UITextView? {
-           get {
-               if textViewData.text.isEmpty == true {
-                   methodAlert()
-               } else if textViewData.text.isEmpty == false {
-                   textViewData.resignFirstResponder()
-               }
-               return textViewData
-           }
-           set {
-               guard let newValue = newValue else {return}
-               textViewData = newValue
-           }
-    }
-    // MARK: - Inheritance
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray4
-        view.addSubview(textField)
-        view.addSubview(textFieldDate)
-        view.addSubview(textViewData)
+        navigationController?.isNavigationBarHidden = false
+        view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+            style: .done, target: self, action: #selector(backToVC(send:)))
+        view.addSubview(scrolls)
+        scrolls.addSubview(time)
+        scrolls.addSubview(notes)
+        scrolls.addSubview(textT)
+        textT.adjustableForKeyboard()
+        textT.delegate = self
+        notes.delegate = self
+        time.delegate = self
+        dateText()
         buttonRightSetting()
-        constraint()
-        textViewData.text = defaults.string(forKey: "textW")
-        textFieldDate.inputAccessoryView = datePicker
-        textFieldDate.reloadInputViews()
+        constraintNote()
+        constraintText()
+        constraintTime()
+        constraintScroll()
     }
-    // MARK: - Methods constraint
-    func constraint() {
-        textViewData.translatesAutoresizingMaskIntoConstraints = false
-        textFieldDate.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor,
-                                               constant: 0),
-            textField.topAnchor.constraint(equalTo: view.topAnchor,
-                                           constant: +80),
-            textField.heightAnchor.constraint(equalToConstant: 50),
-            textField.widthAnchor.constraint(equalToConstant: 381),
-            textFieldDate.centerXAnchor.constraint(equalTo: view.centerXAnchor,
-                                                   constant: 0),
-            textFieldDate.topAnchor.constraint(equalTo: view.topAnchor,
-                                               constant: +135),
-            textFieldDate.heightAnchor.constraint(equalToConstant: 50),
-            textFieldDate.widthAnchor.constraint(equalToConstant: 382),
-            textViewData.centerXAnchor.constraint(equalTo: view.centerXAnchor,
-                                                  constant: 0),
-            textViewData.topAnchor.constraint(equalTo: view.topAnchor,
-                                              constant: +190),
-            textViewData.heightAnchor.constraint(equalToConstant: 630),
-            textViewData.widthAnchor.constraint(equalToConstant: 383)
-        ])
-   }
-   // MARK: - Methods buttonRightSetting
-   func buttonRightSetting() {
-      rightBarButtonItem.title = "Готово"
-      rightBarButtonItem.target = self
-      rightBarButtonItem.action = #selector(rightBarButtonTapAndSaveUserDefault)
-      navigationItem.rightBarButtonItem = rightBarButtonItem
-   }
-    // MARK: - Methods methodAlert
-    func methodAlert() {
-        let alertController = UIAlertController(title: "Danger Error :)", message: "", preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "Вы не заполнили заметку!", style: .cancel, handler: nil)
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
+    func buttonRightSetting() {
+          barButton.title = "Готово"
+          barButton.target = self
+          barButton.isEnabled = true
+          barButton.action = #selector(endEditingView)
+          navigationItem.rightBarButtonItem = barButton
     }
-    // MARK: - Methods notificationMessage
-    @objc func notificationMessage() {
-        getDateFromPicker(NotificationManager(title: textField.text ?? "Error",
-                                              textview: textViewData.text,
-                                              notification: .order))
+      func constraintScroll() {
+        scrolls.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        ).isActive = true
+        scrolls.leftAnchor.constraint(
+           equalTo: view.leftAnchor).isActive = true
+        scrolls.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor
+        ).isActive = true
+        scrolls.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor
+        ).isActive = true
     }
-    // MARK: - Methods getDateFromPicker
-    func getDateFromPicker(_ dailyMessage: NotificationManager) {
-            let dateformatter = DateFormatter()
-            dateformatter.dateFormat = "MM-dd-yyyy"
-            textFieldDate.text = dateformatter.string(from: (datePicker.date))
-        switch dailyMessage.notification {
-        case .order:
-            print("""
-                  Heading: \(dailyMessage.title),
-                  From Data: \(dateformatter.string(from: (datePicker.date))),
-                  NoteText: \(dailyMessage.textview)
-                  """)
-        case .cancel(let message):
-            print("daily canceled because \(message)")
+    func constraintText() {
+        textT.centerXAnchor.constraint(
+            equalTo: view.centerXAnchor
+        ).isActive = true
+        textT.topAnchor.constraint(
+            equalTo: view.topAnchor, constant: +189
+        ).isActive = true
+        textT.bottomAnchor.constraint(
+            equalTo: view.bottomAnchor,
+            constant: -145
+        ).isActive = true
+        textT.heightAnchor.constraint(
+            equalTo: scrolls.heightAnchor
+        ).isActive = true
+        textT.widthAnchor.constraint(
+            equalToConstant: -40
+        ).isActive = true
+        textT.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: 20
+        ).isActive = true
+        textT.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+            constant: -20
+        ).isActive = true
     }
-  }
-}
-// MARK: - Methods rightBarButtonTapAndSaveUserDefault
-extension NoteViewController {
-    @objc func rightBarButtonTapAndSaveUserDefault(_ sender: Any) {
-        let textW = textViewData.text
-        if textViewData.text.isEmpty == true {
-            rightBarButtonItem.title = "Готово"
-            textViewText?.text = textViewData.text
-            textField.becomeFirstResponder()
-            textViewData.becomeFirstResponder()
-        } else if textViewData.text.isEmpty == false {
-            defaults.set(textW, forKey: "textW")
-            textViewText?.text = textViewData.text
-            textFieldDate.resignFirstResponder()
-            textField.resignFirstResponder()
+    func constraintNote() {
+        notes.centerXAnchor.constraint(
+            equalTo: view.centerXAnchor
+        ).isActive = true
+        notes.topAnchor.constraint(
+            equalTo: view.topAnchor,
+            constant: +137
+        ).isActive = true
+        notes.bottomAnchor.constraint(
+            equalTo: view.bottomAnchor,
+            constant: -683
+        ).isActive = true
+        notes.heightAnchor.constraint(
+            equalToConstant: 24
+        ).isActive = true
+        notes.widthAnchor.constraint(
+            equalToConstant: 300
+        ).isActive = true
+        notes.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+            constant: 20
+        ).isActive = true
+        notes.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+            constant: -70
+        ).isActive = true
+    }
+    func constraintTime() {
+        time.centerXAnchor.constraint(
+            equalTo: view.centerXAnchor,
+            constant: 0
+        ).isActive = true
+        time.topAnchor.constraint(
+            equalTo: view.topAnchor,
+            constant: +101
+        ).isActive = true
+        time.bottomAnchor.constraint(
+            equalTo: view.bottomAnchor,
+            constant: -727
+        ).isActive = true
+        time.heightAnchor.constraint(
+            equalToConstant: 16
+        ).isActive = true
+        time.widthAnchor.constraint(
+            equalToConstant: 350
+        ).isActive = true
+        time.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+            constant: 20
+        ).isActive = true
+        time.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+            constant: -20
+        ).isActive = true
+    }
+
+    @objc func endEditingView() {
+        view.endEditing(true)
+    }
+    func dateText() {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
+        time.placeholder = dateFormater.string(from: Date())
+    }
+    @objc func backToVC(send: UIButton) {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "dd.MM.yyyy"
+        time.placeholder = dateFormater.string(from: Date())
+        guard let time = time.text else {return}
+        guard let message = textT.text else {return}
+        guard let note = notes.text else {return}
+        switch label.text {
+        case "1": delegateProtocol?.fetchDataViewOne(textTimeOne: time, textMesgOne: message, titleNotOne: note)
+        case "2": delegateProtocol?.fetchDataViewTwo(textTimeTwo: time, textMesgTwo: message, titleNotTwo: note)
+        case "3": delegateProtocol?.fetchDataViewThree(textTimeThre: time, textMesgThre: message, titleNotThre: note)
+        case "4": delegateProtocol?.fetchDataViewFour(textTimeFour: time, textMesgFour: message, titleNotFour: note)
+        case "5": delegateProtocol?.fetchDataViewFive(textTimeFive: time, textMesgFive: message, titleNotFive: note)
+        case "6": delegateProtocol?.fetchDataViewSix(textTimeSix: time, textMesgSix: message, titleNotSix: note)
+        case "7": delegateProtocol?.fetchDataViewSeven(textTimeSeven: time, textMesgSeven: message, titleNotSeven: note)
+        default:
+            break
         }
+        navigationController?.popViewController(animated: true)
+        navigationController?.isNavigationBarHidden = true
+    }
+}
+
+extension NoteViewOneGesture: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+         barButton.isEnabled = false
+    }
+    func textViewDidChangeSelection(_ textView: UITextView) {
+         barButton.isEnabled = true
+    }
+}
+
+extension NoteViewOneGesture: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        barButton.isEnabled = false
+    }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        barButton.isEnabled = true
     }
 }
