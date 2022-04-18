@@ -10,6 +10,7 @@ import UIKit
 class TwoViewController: UIViewController {
   weak  var delegatePR: SomeProtocol?
     var count = Int()
+
     lazy var tapGesture: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
         tap.addTarget(self, action: #selector(hidenKeyBoard))
@@ -49,7 +50,7 @@ class TwoViewController: UIViewController {
     lazy var titleTextView: UITextView = {
         let textView = UITextView()
          textView.becomeFirstResponder()
-        textView.translatesAutoresizingMaskIntoConstraints = false
+         textView.translatesAutoresizingMaskIntoConstraints = false
          textView.textColor = UIColor.black
          textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
          textView.textAlignment = .center
@@ -86,22 +87,24 @@ class TwoViewController: UIViewController {
         labels.text = userdefault.string(forKey: "textCount")
         print(labels)
     }
+    // MARK: - Method dateTextTitle
     @objc func hidenKeyBoard() {
         textNoteTwo.resignFirstResponder()
         titleTextView.resignFirstResponder()
     }
+    // MARK: - Method tapButton
     @objc func tapButton(_ sender: UIButton) {
          let vcGesture = NoteViewOneGesture()
             navigationController?.pushViewController(vcGesture, animated: true)
         }
-
+    // MARK: - Method dateTextTitle
     func dateTextTitle() {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
         titleTimeTwo.text = dateFormater.string(from: Date())
     }
 }
-
+// MARK: - Method backVC
 extension TwoViewController {
     @objc func backVC() {
         let dateFormater = DateFormatter()
@@ -112,42 +115,29 @@ extension TwoViewController {
         guard let note = textNoteTwo.text else {return}
         navigationController?.popViewController(animated: true)
         navigationController?.isNavigationBarHidden = true
-        delegatePR?.count(count: labels.text ?? "")
         switch labels.text {
         case "1": delegatePR?.fetchDataViewOne(
-                  textTimeOne: time,
-                  textMesgOne: text,
-                  titleNotOne: note)
+                    textTimeOne: time,
+                    textMesgOne: text,
+                    titleNotOne: note)
         case "2": delegatePR?.fetchDataViewTwo(
-                  textTimeTwo: time,
-                  textMesgTwo: text,
-                  titleNotTwo: note)
-        case "3": delegatePR?.fetchDataViewThree(
-                  textTimeThre: time,
-                  textMesgThre: text,
-                  titleNotThre: note)
+                    textTimeTwo: time,
+                    textMesgTwo: text,
+                    titleNotTwo: note)
+        case "3": delegatePR?.fetchDataViewThre(
+                    textTimeThre: time,
+                    textMesgThre: text,
+                    titleNotThre: note)
         case "4": delegatePR?.fetchDataViewFour(
-                  textTimeFour: time,
-                  textMesgFour: text,
-                  titleNotFour: note)
-        case "5": delegatePR?.fetchDataViewFive(
-                  textTimeFive: time,
-                  textMesgFive: text,
-                  titleNotFive: note)
-        case "6": delegatePR?.fetchDataViewSix(
-                  textTimeSix: time,
-                  textMesgSix: text,
-                  titleNotSix: note)
-        case "7": delegatePR?.fetchDataViewSeven(
-                  textTimeSeven: time,
-                  textMesgSeven: text,
-                  titleNotSeven: note)
+                    textTimeFour: time,
+                    textMesgFour: text,
+                    titleNotFour: note)
         default:
             break
     }
   }
 }
-
+// MARK: - Method adjustableForKeyboard
  extension UITextView {
      func adjustableForKeyboard() {
         let notoficationCenter = NotificationCenter.default
@@ -180,6 +170,7 @@ extension TwoViewController {
         scrollRangeToVisible(selectedRange)
     }
 }
+// MARK: - Method constraintScrollAndLabel
 extension TwoViewController {
     func constraintScrollAndLabel() {
         scroll.topAnchor.constraint(
@@ -220,6 +211,7 @@ extension TwoViewController {
             constant: -20
         ).isActive = true
     }
+    // MARK: - Method constraintTime
     func constraintTime() {
         titleTimeTwo.centerXAnchor.constraint(
             equalTo: view.centerXAnchor,
@@ -227,11 +219,11 @@ extension TwoViewController {
         ).isActive = true
         titleTimeTwo.topAnchor.constraint(
             equalTo: view.topAnchor,
-            constant: +101
+            constant: +121
         ).isActive = true
         titleTimeTwo.bottomAnchor.constraint(
             equalTo: view.bottomAnchor,
-            constant: -727).isActive = true
+            constant: -747).isActive = true
         titleTimeTwo.heightAnchor.constraint(
             equalToConstant: 16
         ).isActive = true
@@ -247,17 +239,18 @@ extension TwoViewController {
             constant: -20
         ).isActive = true
     }
+    // MARK: - Method constraintTextNote
     func constraintTextNote() {
         textNoteTwo.centerXAnchor.constraint(
-            equalTo: view.centerXAnchor
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor
         ).isActive = true
         textNoteTwo.topAnchor.constraint(
-            equalTo: view.topAnchor,
-            constant: +137
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +107
         ).isActive = true
         textNoteTwo.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
-            constant: -683
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -700
         ).isActive = true
         textNoteTwo.heightAnchor.constraint(
             equalToConstant: 24
@@ -274,31 +267,37 @@ extension TwoViewController {
             constant: -70
         ).isActive = true
     }
+    // MARK: - Method constraintTextView
     func constraintTextView() {
         titleTextView.centerXAnchor.constraint(
-            equalTo: view.centerXAnchor
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor,
+           constant: +5
+        ).isActive = true
+        titleTextView.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor,
+            constant: +100
         ).isActive = true
         titleTextView.topAnchor.constraint(
-            equalTo: view.topAnchor,
-            constant: +189
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+           constant: +149
         ).isActive = true
         titleTextView.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
-            constant: -145
-        ).isActive = true
-        titleTextView.heightAnchor.constraint(
-            equalTo: scroll.heightAnchor
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+           constant: -145
         ).isActive = true
         titleTextView.widthAnchor.constraint(
-            equalToConstant: 350
+           equalToConstant: +350
+        ).isActive = true
+        titleTextView.heightAnchor.constraint(
+            equalTo: scroll.safeAreaLayoutGuide.heightAnchor, constant: +510
         ).isActive = true
         titleTextView.leadingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: 20
+           constant: +20
         ).isActive = true
         titleTextView.trailingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-            constant: -20
+           constant: -20
         ).isActive = true
     }
 }

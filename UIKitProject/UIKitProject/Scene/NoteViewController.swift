@@ -8,8 +8,11 @@
 import UIKit
 
 class NoteViewOneGesture: UIViewController {
+
     var delegateProtocol: SomeProtocol?
+
     @objc let barButton = UIBarButtonItem()
+
     let label: UILabel = {
         let lab = UILabel()
         lab.isHidden = true
@@ -32,28 +35,28 @@ class NoteViewOneGesture: UIViewController {
         textTime.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
         return textTime
     }()
-     var notes: UITextField = {
+    var notes: UITextField = {
         let textTitle = UITextField()
-         textTitle.translatesAutoresizingMaskIntoConstraints = false
-         textTitle.placeholder = "Введите название"
-         textTitle.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
-         textTitle.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 1254/255, alpha: 1)
-         textTitle.textAlignment = .left
-         textTitle.font = UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.medium)
-         textTitle.text = ""
+        textTitle.translatesAutoresizingMaskIntoConstraints = false
+        textTitle.placeholder = "Введите название"
+        textTitle.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
+        textTitle.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 1254/255, alpha: 1)
+        textTitle.textAlignment = .left
+        textTitle.font = UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.medium)
+        textTitle.text = ""
         return textTitle
     }()
-     var textT: UITextView = {
+    var textT: UITextView = {
         let textView = UITextView()
-         textView.translatesAutoresizingMaskIntoConstraints = false
-         textView.becomeFirstResponder()
-         textView.textColor = UIColor.black
-         textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-         textView.textAlignment = .center
-         textView.text = """
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.becomeFirstResponder()
+        textView.textColor = UIColor.black
+        textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textView.textAlignment = .center
+        textView.text = """
         """
-         textView.textAlignment = .left
-         textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
+        textView.textAlignment = .left
+        textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
         return textView
     }()
     override func viewDidLoad() {
@@ -61,7 +64,8 @@ class NoteViewOneGesture: UIViewController {
         navigationController?.isNavigationBarHidden = false
         view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
-            style: .done, target: self, action: #selector(backToVC(send:)))
+                                                           style: .done, target: self,
+                                                           action: #selector(backToVC(send:)))
         view.addSubview(scrolls)
         scrolls.addSubview(time)
         scrolls.addSubview(notes)
@@ -77,19 +81,23 @@ class NoteViewOneGesture: UIViewController {
         constraintTime()
         constraintScroll()
     }
+
+    // MARK: - Method buttonRightSetting
     func buttonRightSetting() {
-          barButton.title = "Готово"
-          barButton.target = self
-          barButton.isEnabled = true
-          barButton.action = #selector(endEditingView)
-          navigationItem.rightBarButtonItem = barButton
+        barButton.title = "Готово"
+        barButton.target = self
+        barButton.isEnabled = true
+        barButton.action = #selector(endEditingView)
+        navigationItem.rightBarButtonItem = barButton
     }
-      func constraintScroll() {
+
+    // MARK: - Method constraintScroll
+    func constraintScroll() {
         scrolls.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor
         ).isActive = true
         scrolls.leftAnchor.constraint(
-           equalTo: view.leftAnchor).isActive = true
+            equalTo: view.leftAnchor).isActive = true
         scrolls.trailingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.trailingAnchor
         ).isActive = true
@@ -97,43 +105,53 @@ class NoteViewOneGesture: UIViewController {
             equalTo: view.safeAreaLayoutGuide.bottomAnchor
         ).isActive = true
     }
+
+    // MARK: - Method constraintText
     func constraintText() {
         textT.centerXAnchor.constraint(
-            equalTo: view.centerXAnchor
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor,
+            constant: +5
+        ).isActive = true
+        textT.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor,
+            constant: +100
         ).isActive = true
         textT.topAnchor.constraint(
-            equalTo: view.topAnchor, constant: +189
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +149
         ).isActive = true
         textT.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
             constant: -145
         ).isActive = true
-        textT.heightAnchor.constraint(
-            equalTo: scrolls.heightAnchor
-        ).isActive = true
         textT.widthAnchor.constraint(
-            equalToConstant: -40
+            equalToConstant: +350
+        ).isActive = true
+        textT.heightAnchor.constraint(
+            equalTo: scrolls.safeAreaLayoutGuide.heightAnchor, constant: +510
         ).isActive = true
         textT.leadingAnchor.constraint(
-            equalTo: view.leadingAnchor,
-            constant: 20
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+            constant: +20
         ).isActive = true
         textT.trailingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.trailingAnchor,
             constant: -20
         ).isActive = true
     }
+
+    // MARK: - Method constraintNote
     func constraintNote() {
         notes.centerXAnchor.constraint(
-            equalTo: view.centerXAnchor
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor
         ).isActive = true
         notes.topAnchor.constraint(
-            equalTo: view.topAnchor,
-            constant: +137
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +107
         ).isActive = true
         notes.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
-            constant: -683
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -700
         ).isActive = true
         notes.heightAnchor.constraint(
             equalToConstant: 24
@@ -150,6 +168,8 @@ class NoteViewOneGesture: UIViewController {
             constant: -70
         ).isActive = true
     }
+
+    // MARK: - Method constraintTime
     func constraintTime() {
         time.centerXAnchor.constraint(
             equalTo: view.centerXAnchor,
@@ -157,12 +177,11 @@ class NoteViewOneGesture: UIViewController {
         ).isActive = true
         time.topAnchor.constraint(
             equalTo: view.topAnchor,
-            constant: +101
+            constant: +121
         ).isActive = true
         time.bottomAnchor.constraint(
             equalTo: view.bottomAnchor,
-            constant: -727
-        ).isActive = true
+            constant: -747).isActive = true
         time.heightAnchor.constraint(
             equalToConstant: 16
         ).isActive = true
@@ -179,14 +198,19 @@ class NoteViewOneGesture: UIViewController {
         ).isActive = true
     }
 
+    // MARK: - Method endEditingView
     @objc func endEditingView() {
         view.endEditing(true)
     }
+
+    // MARK: - Method dateText
     func dateText() {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
         time.placeholder = dateFormater.string(from: Date())
     }
+
+    // MARK: - Method backToVC
     @objc func backToVC(send: UIButton) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
@@ -197,11 +221,8 @@ class NoteViewOneGesture: UIViewController {
         switch label.text {
         case "1": delegateProtocol?.fetchDataViewOne(textTimeOne: time, textMesgOne: message, titleNotOne: note)
         case "2": delegateProtocol?.fetchDataViewTwo(textTimeTwo: time, textMesgTwo: message, titleNotTwo: note)
-        case "3": delegateProtocol?.fetchDataViewThree(textTimeThre: time, textMesgThre: message, titleNotThre: note)
+        case "3": delegateProtocol?.fetchDataViewThre(textTimeThre: time, textMesgThre: message, titleNotThre: note)
         case "4": delegateProtocol?.fetchDataViewFour(textTimeFour: time, textMesgFour: message, titleNotFour: note)
-        case "5": delegateProtocol?.fetchDataViewFive(textTimeFive: time, textMesgFive: message, titleNotFive: note)
-        case "6": delegateProtocol?.fetchDataViewSix(textTimeSix: time, textMesgSix: message, titleNotSix: note)
-        case "7": delegateProtocol?.fetchDataViewSeven(textTimeSeven: time, textMesgSeven: message, titleNotSeven: note)
         default:
             break
         }
@@ -210,15 +231,17 @@ class NoteViewOneGesture: UIViewController {
     }
 }
 
+// MARK: - Method textViewDidEndEditing, textViewDidChangeSelection
 extension NoteViewOneGesture: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-         barButton.isEnabled = false
+        barButton.isEnabled = false
     }
     func textViewDidChangeSelection(_ textView: UITextView) {
-         barButton.isEnabled = true
+        barButton.isEnabled = true
     }
 }
 
+// MARK: - Method textFieldDidEndEditing, textFieldDidChangeSelection
 extension NoteViewOneGesture: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         barButton.isEnabled = false
