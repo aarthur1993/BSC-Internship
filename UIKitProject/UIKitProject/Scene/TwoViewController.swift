@@ -132,6 +132,10 @@ extension TwoViewController {
                     textTimeFour: time,
                     textMesgFour: text,
                     titleNotFour: note)
+        case "5": delegatePR?.fetchDataViewFive(
+                    textTimeFive: time,
+                    textMesgFive: text,
+                    titleNotFive: note)
         default:
             break
     }

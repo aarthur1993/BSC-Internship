@@ -30,8 +30,9 @@ class ViewOne: UIView {
 }
 // MARK: - Method itemss
 func itemss() -> [ViewOne] {
-   var addData: [ViewOne] = []
+    var addData: [ViewOne] = []
     for iii in 0...8 {
+
         addData.append(ViewOne(text: "Text: \(iii)", note: "Note: \(iii)", time: "Time: \(iii)", id: "UUIID: \(iii)"))
     }
     return addData

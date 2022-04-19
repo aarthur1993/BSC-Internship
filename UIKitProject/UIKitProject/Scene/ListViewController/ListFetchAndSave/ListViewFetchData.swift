@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Method tapButton
 extension ListViewController {
-   @objc func tapButton(_ sender: UIButton) {
+    @objc func tapButton(_ sender: UIButton) {
         let vcTwo = TwoViewController()
         let noteVC = NoteViewOneGesture()
         vcTwo.delegatePR = self
@@ -19,7 +19,6 @@ extension ListViewController {
         case plusButton:
             count += 1
             vcTwo.labels.text  = "\(count)"
-            print("Количество Вью \(count)")
             navigationController?.pushViewController(vcTwo, animated: true)
         case tapGestureRecognizerOne:
             noteVC.label.text = "\(count)"
@@ -53,6 +52,14 @@ extension ListViewController {
                 noteVC.time.placeholder = time
             }
             navigationController?.pushViewController(noteVC, animated: true)
+        case tapGestureRecognizerFive:
+            noteVC.label.text = "\(count)"
+            closureFive { notess, mesage, time in
+                noteVC.notes.text = notess
+                noteVC.textT.text = mesage
+                noteVC.time.placeholder = time
+            }
+            navigationController?.pushViewController(noteVC, animated: true)
         default:
             break
         }
@@ -61,7 +68,6 @@ extension ListViewController {
 
 // MARK: - Method tapButton
 extension ListViewController {
-
     func closure(complition: (String, String, String) -> Void) {
         complition(titleNote.text ?? "",
                    textMessage.text ?? "",
@@ -82,5 +88,9 @@ extension ListViewController {
                    textMessageFour.text ?? "",
                    titlTimeFour.text ?? "")
     }
-
+    func closureFive(complition: (String, String, String) -> Void) {
+        complition(titleNoteFive.text ?? "",
+                   textMessageFive.text ?? "",
+                   titlTimeFive.text ?? "")
+    }
 }

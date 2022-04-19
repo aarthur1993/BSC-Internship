@@ -223,6 +223,7 @@ class NoteViewOneGesture: UIViewController {
         case "2": delegateProtocol?.fetchDataViewTwo(textTimeTwo: time, textMesgTwo: message, titleNotTwo: note)
         case "3": delegateProtocol?.fetchDataViewThre(textTimeThre: time, textMesgThre: message, titleNotThre: note)
         case "4": delegateProtocol?.fetchDataViewFour(textTimeFour: time, textMesgFour: message, titleNotFour: note)
+        case "5": delegateProtocol?.fetchDataViewFive(textTimeFive: time, textMesgFive: message, titleNotFive: note)
         default:
             break
         }
