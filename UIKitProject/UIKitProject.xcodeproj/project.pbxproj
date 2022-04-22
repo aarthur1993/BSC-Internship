@@ -7,24 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4497092B280712EC00D76313 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092A280712EC00D76313 /* CustomView.swift */; };
+		4497092B280712EC00D76313 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092A280712EC00D76313 /* Note.swift */; };
 		4497092D2807130800D76313 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092C2807130800D76313 /* ListViewController.swift */; };
-		4497092F2807130D00D76313 /* TwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092E2807130D00D76313 /* TwoViewController.swift */; };
-		4497093528072FC500D76313 /* ListViewConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497093428072FC500D76313 /* ListViewConstraint.swift */; };
-		4497093C2807334D00D76313 /* ListViewFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497093B2807334D00D76313 /* ListViewFetchData.swift */; };
 		44CFE14827F5F6BF006F7A9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14727F5F6BF006F7A9F /* AppDelegate.swift */; };
 		44CFE14A27F5F6BF006F7A9F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14927F5F6BF006F7A9F /* SceneDelegate.swift */; };
 		44CFE14C27F5F6BF006F7A9F /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14B27F5F6BF006F7A9F /* NoteViewController.swift */; };
 		44CFE15127F5F6BF006F7A9F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44CFE15027F5F6BF006F7A9F /* Assets.xcassets */; };
 		44CFE15427F5F6BF006F7A9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CFE15227F5F6BF006F7A9F /* LaunchScreen.storyboard */; };
+		44F53ACB28103A35002E3E71 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACA28103A35002E3E71 /* NoteView.swift */; };
+		44F53ACE28103F98002E3E71 /* ListView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACD28103F98002E3E71 /* ListView+Extension.swift */; };
+		44F53AD028103FB1002E3E71 /* NoteView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4497092A280712EC00D76313 /* CustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
+		4497092A280712EC00D76313 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		4497092C2807130800D76313 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		4497092E2807130D00D76313 /* TwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoViewController.swift; sourceTree = "<group>"; };
-		4497093428072FC500D76313 /* ListViewConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewConstraint.swift; sourceTree = "<group>"; };
-		4497093B2807334D00D76313 /* ListViewFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewFetchData.swift; sourceTree = "<group>"; };
 		44CFE14427F5F6BF006F7A9F /* UIKitProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CFE14727F5F6BF006F7A9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44CFE14927F5F6BF006F7A9F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -32,6 +29,9 @@
 		44CFE15027F5F6BF006F7A9F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44CFE15327F5F6BF006F7A9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44CFE15527F5F6BF006F7A9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44F53ACA28103A35002E3E71 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		44F53ACD28103F98002E3E71 /* ListView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Extension.swift"; sourceTree = "<group>"; };
+		44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,46 +45,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		44970929280712DC00D76313 /* CustomView */ = {
+		44970929280712DC00D76313 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4497093F280734E300D76313 /* ModelView */,
-				4497092A280712EC00D76313 /* CustomView.swift */,
+				4497092A280712EC00D76313 /* Note.swift */,
 			);
-			path = CustomView;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		449709312807216C00D76313 /* ConstraintsListView */ = {
+		449709402807358B00D76313 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				4497093428072FC500D76313 /* ListViewConstraint.swift */,
+				4497092C2807130800D76313 /* ListViewController.swift */,
+				44CFE14B27F5F6BF006F7A9F /* NoteViewController.swift */,
 			);
-			path = ConstraintsListView;
-			sourceTree = "<group>";
-		};
-		4497093A2807331C00D76313 /* ListFetchAndSave */ = {
-			isa = PBXGroup;
-			children = (
-				4497093B2807334D00D76313 /* ListViewFetchData.swift */,
-			);
-			path = ListFetchAndSave;
-			sourceTree = "<group>";
-		};
-		4497093F280734E300D76313 /* ModelView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ModelView;
-			sourceTree = "<group>";
-		};
-		449709402807358B00D76313 /* ListViewController */ = {
-			isa = PBXGroup;
-			children = (
-				44970929280712DC00D76313 /* CustomView */,
-				449709312807216C00D76313 /* ConstraintsListView */,
-				4497093A2807331C00D76313 /* ListFetchAndSave */,
-			);
-			path = ListViewController;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		44CDAEFB27FE21EA00ECB917 /* Resource */ = {
@@ -99,10 +74,10 @@
 		44CDAEFC27FE21F900ECB917 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				449709402807358B00D76313 /* ListViewController */,
-				4497092C2807130800D76313 /* ListViewController.swift */,
-				4497092E2807130D00D76313 /* TwoViewController.swift */,
-				44CFE14B27F5F6BF006F7A9F /* NoteViewController.swift */,
+				44F53ACC28103F47002E3E71 /* Extension */,
+				44F53AC928103A13002E3E71 /* Views */,
+				44970929280712DC00D76313 /* Model */,
+				449709402807358B00D76313 /* Controllers */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -141,6 +116,23 @@
 				44CFE15527F5F6BF006F7A9F /* Info.plist */,
 			);
 			path = UIKitProject;
+			sourceTree = "<group>";
+		};
+		44F53AC928103A13002E3E71 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				44F53ACA28103A35002E3E71 /* NoteView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		44F53ACC28103F47002E3E71 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				44F53ACD28103F98002E3E71 /* ListView+Extension.swift */,
+				44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,12 +228,12 @@
 			files = (
 				44CFE14C27F5F6BF006F7A9F /* NoteViewController.swift in Sources */,
 				44CFE14827F5F6BF006F7A9F /* AppDelegate.swift in Sources */,
+				44F53ACE28103F98002E3E71 /* ListView+Extension.swift in Sources */,
 				4497092D2807130800D76313 /* ListViewController.swift in Sources */,
-				4497093528072FC500D76313 /* ListViewConstraint.swift in Sources */,
-				4497092F2807130D00D76313 /* TwoViewController.swift in Sources */,
 				44CFE14A27F5F6BF006F7A9F /* SceneDelegate.swift in Sources */,
-				4497092B280712EC00D76313 /* CustomView.swift in Sources */,
-				4497093C2807334D00D76313 /* ListViewFetchData.swift in Sources */,
+				44F53ACB28103A35002E3E71 /* NoteView.swift in Sources */,
+				44F53AD028103FB1002E3E71 /* NoteView+Extension.swift in Sources */,
+				4497092B280712EC00D76313 /* Note.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

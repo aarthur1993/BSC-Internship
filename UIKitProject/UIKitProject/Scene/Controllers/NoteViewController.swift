@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoteViewOneGesture: UIViewController {
+class NoteViewController: UIViewController {
 
     var delegateProtocol: SomeProtocol?
 
@@ -31,6 +31,7 @@ class NoteViewOneGesture: UIViewController {
         textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
         textTime.textAlignment = .center
         textTime.textColor = .red
+        textTime.isUserInteractionEnabled = false
         textTime.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
         textTime.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
         return textTime
@@ -59,13 +60,14 @@ class NoteViewOneGesture: UIViewController {
         textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
         return textView
     }()
-    override func viewDidLoad() {
+
+        override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = false
         view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
                                                            style: .done, target: self,
-                                                           action: #selector(backToVC(send:)))
+                                                           action: #selector(backToVC))
         view.addSubview(scrolls)
         scrolls.addSubview(time)
         scrolls.addSubview(notes)
@@ -74,12 +76,12 @@ class NoteViewOneGesture: UIViewController {
         textT.delegate = self
         notes.delegate = self
         time.delegate = self
-        dateText()
         buttonRightSetting()
         constraintNote()
         constraintText()
         constraintTime()
         constraintScroll()
+        dateTextTitle()
     }
 
     // MARK: - Method buttonRightSetting
@@ -202,52 +204,21 @@ class NoteViewOneGesture: UIViewController {
     @objc func endEditingView() {
         view.endEditing(true)
     }
-
-    // MARK: - Method dateText
-    func dateText() {
+    // MARK: - Method dateTextTitle
+    func dateTextTitle() {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
-        time.placeholder = dateFormater.string(from: Date())
+        time.text = dateFormater.string(from: Date())
     }
 
     // MARK: - Method backToVC
     @objc func backToVC(send: UIButton) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
-        time.placeholder = dateFormater.string(from: Date())
-        guard let time = time.text else {return}
-        guard let message = textT.text else {return}
-        guard let note = notes.text else {return}
-        switch label.text {
-        case "1": delegateProtocol?.fetchDataViewOne(textTimeOne: time, textMesgOne: message, titleNotOne: note)
-        case "2": delegateProtocol?.fetchDataViewTwo(textTimeTwo: time, textMesgTwo: message, titleNotTwo: note)
-        case "3": delegateProtocol?.fetchDataViewThre(textTimeThre: time, textMesgThre: message, titleNotThre: note)
-        case "4": delegateProtocol?.fetchDataViewFour(textTimeFour: time, textMesgFour: message, titleNotFour: note)
-        case "5": delegateProtocol?.fetchDataViewFive(textTimeFive: time, textMesgFive: message, titleNotFive: note)
-        default:
-            break
-        }
+        time.text = dateFormater.string(from: Date())
+        delegateProtocol?.fetchDataView(textTime: time.text ?? "",
+                                        textMesg: textT.text ?? "",
+                                        titleNot: notes.text ?? "")
         navigationController?.popViewController(animated: true)
-        navigationController?.isNavigationBarHidden = true
-    }
-}
-
-// MARK: - Method textViewDidEndEditing, textViewDidChangeSelection
-extension NoteViewOneGesture: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        barButton.isEnabled = false
-    }
-    func textViewDidChangeSelection(_ textView: UITextView) {
-        barButton.isEnabled = true
-    }
-}
-
-// MARK: - Method textFieldDidEndEditing, textFieldDidChangeSelection
-extension NoteViewOneGesture: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        barButton.isEnabled = false
-    }
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        barButton.isEnabled = true
     }
 }
