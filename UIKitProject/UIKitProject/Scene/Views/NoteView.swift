@@ -10,20 +10,14 @@ import UIKit
 
 // MARK: Custom Model
 final class NoteView: UIView {
-    var id = UUID().uuidString
+
+    var id = UUID()
      var note = UILabel()
      var message = UILabel()
      var time = UILabel()
 
-    var model: Note = Note(title: "", text: "", date: "") {
-        didSet {
-            note.text = model.title
-            message.text = model.text
-            time.text = model.date
-        }
-    }
-
     func set(with: Note) {
+        self.id = with.id
         self.note.text = with.title
         self.message.text = with.text
         self.time.text = with.date

@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-struct Note: Codable, Identifiable {
+struct Note {
     // MARK: - Internal properties
-
-    var id = UUID().uuidString
+    var id = UUID()
     var title: String?
     var text: String?
     var date: String
 
-    init(title: String?, text: String?, date: String) {
+    init(id: UUID, title: String?, text: String?, date: String) {
+        self.id = id
         self.title = title
         self.text = text
         self.date = date

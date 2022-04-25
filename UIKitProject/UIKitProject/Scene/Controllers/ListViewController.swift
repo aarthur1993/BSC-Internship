@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SomeProtocol: AnyObject {
-    func fetchDataView(textTime: String, textMesg: String, titleNot: String)
+    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String)
 }
 
 class ListViewController: UIViewController, SomeProtocol {
@@ -79,8 +79,8 @@ class ListViewController: UIViewController, SomeProtocol {
         constraintTitlText()
         constraintPlusButton()
         constraint()
-
     }
+
     // MARK: - Method addNoteForStack
     func constraint() {
         scroll.centerXAnchor.constraint(
@@ -110,20 +110,21 @@ class ListViewController: UIViewController, SomeProtocol {
             equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
 
     }
+
     // MARK: - Method addNoteForStack
     func addNoteForStack(noteView: NoteView, stack: UIStackView) {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapButton(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(gestureTap(_:)))
         noteView.addGestureRecognizer(tap)
-        noteView.backgroundColor = UIColor.white
 
+        noteView.backgroundColor = UIColor.white
         noteView.layer.cornerRadius = 15
-        noteView.note.textColor = .black
         noteView.note.textAlignment = .left
-        noteView.note.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
-        noteView.message.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
-        noteView.message.font = UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.medium)
+        noteView.note.textColor = .black
         noteView.time.textColor = .black
+        noteView.message.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
+        noteView.note.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
         noteView.time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
+        noteView.message.font = UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.medium)
 
         stack.addArrangedSubview(noteView.note)
         stack.addArrangedSubview(noteView.message)
@@ -144,4 +145,26 @@ class ListViewController: UIViewController, SomeProtocol {
         noteView.time.topAnchor.constraint(equalTo: noteView.topAnchor, constant: +70).isActive = true
         noteView.time.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: +15).isActive = true
 }
+    // MARK: - Method gestureTap
+    @objc func gestureTap(_ sender: UITapGestureRecognizer? = nil) {
+
+        guard let currentNoteView = sender?.view as? NoteView else { return }
+
+        let noteViewController = NoteViewController()
+
+        noteViewController.delegateProtocol = self
+
+        if let selectNote = note.first(
+            where: {
+                print("CurrentNote ID\(currentNoteView.id)")
+                return $0.id == currentNoteView.id
+            }) {
+            noteViewController.fetchData(id: selectNote.id,
+                                         textTime: selectNote.date,
+                                         textMesg: selectNote.text ?? "",
+                                         titleNot: selectNote.title ?? "")
+        }
+
+        navigationController?.pushViewController(noteViewController, animated: true)
+   }
 }

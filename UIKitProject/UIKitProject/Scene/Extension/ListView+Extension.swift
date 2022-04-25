@@ -10,13 +10,20 @@ import UIKit
 
 extension ListViewController {
     // MARK: - Method fetchDataViewOne
-    func fetchDataView(textTime: String, textMesg: String, titleNot: String) {
-        let notes = Note(title: titleNot, text: textMesg, date: textTime)
-        self.note.append(notes)
+    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String) {
+        let notes = Note(id: id, title: titleNot, text: textMesg, date: textTime)
 
-        let myView = NoteView()
-        myView.set(with: notes)
-        addNoteForStack(noteView: myView, stack: stackView)
+        if self.note.contains(where: { $0.id == id }) {
+            stackView.subviews.forEach {
+                guard let subview = $0 as? NoteView, subview.id == id else { return }
+                subview.set(with: notes)
+            }
+        } else {
+            self.note.append(notes)
+            let myView = NoteView()
+            myView.set(with: notes)
+            addNoteForStack(noteView: myView, stack: stackView)
+        }
     }
 }
 
@@ -24,20 +31,16 @@ extension ListViewController {
 extension ListViewController {
     @objc func tapButton(_ sender: UIButton) {
         let noteVC = NoteViewController()
-
         noteVC.delegateProtocol = self
-
         switch sender {
         case plusButton:
-            navigationController?.pushViewController(noteVC, animated: true)
-        case tapGestureRecognizer:
             navigationController?.pushViewController(noteVC, animated: true)
         default:
             break
         }
     }
-}
 
+}
 // MARK: - Method constraintTitlText
     extension ListViewController {
         func constraintTitlText() {
@@ -46,7 +49,7 @@ extension ListViewController {
             titl.centerYAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +10).isActive = true
             titl.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +1).isActive = true
+                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +0).isActive = true
             titl.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -845).isActive = true
             titl.widthAnchor.constraint(equalToConstant: +100).isActive = true
@@ -59,9 +62,9 @@ extension ListViewController {
         // MARK: - Method constraintPlusButton
         func constraintPlusButton() {
             plusButton.centerXAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +366).isActive = true
+                equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +350).isActive = true
             plusButton.centerYAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +380).isActive = true
+                equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +350).isActive = true
             plusButton.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
             plusButton.widthAnchor.constraint(

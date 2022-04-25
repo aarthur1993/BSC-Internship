@@ -7,11 +7,17 @@
 
 import UIKit
 
-class NoteViewController: UIViewController {
+protocol NoteViews {
+    func fetchData(id: UUID?, textTime: String, textMesg: String, titleNot: String)
+}
+
+class NoteViewController: UIViewController, NoteViews {
 
     var delegateProtocol: SomeProtocol?
 
     @objc let barButton = UIBarButtonItem()
+
+    var id: UUID?
 
     let label: UILabel = {
         let lab = UILabel()
@@ -216,9 +222,17 @@ class NoteViewController: UIViewController {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
         time.text = dateFormater.string(from: Date())
-        delegateProtocol?.fetchDataView(textTime: time.text ?? "",
+        delegateProtocol?.fetchDataView(id: id ?? UUID(),
+                                        textTime: time.text ?? "",
                                         textMesg: textT.text ?? "",
                                         titleNot: notes.text ?? "")
         navigationController?.popViewController(animated: true)
+    }
+
+    func fetchData(id: UUID?, textTime: String, textMesg: String, titleNot: String) {
+        self.id = id
+        self.notes.text = titleNot
+        self.textT.text = textMesg
+        self.time.text = textTime
     }
 }
