@@ -7,11 +7,7 @@
 
 import UIKit
 
-protocol NoteViews {
-    func fetchData(id: UUID?, textTime: String, textMesg: String, titleNot: String)
-}
-
-class NoteViewController: UIViewController, NoteViews {
+class NoteViewController: UIViewController {
 
     var delegateProtocol: SomeProtocol?
 
@@ -83,15 +79,19 @@ class NoteViewController: UIViewController, NoteViews {
         notes.delegate = self
         time.delegate = self
         buttonRightSetting()
-        constraintNote()
-        constraintText()
-        constraintTime()
-        constraintScroll()
+        constraint()
         dateTextTitle()
     }
 
+    func addData(id: UUID, note: String, message: String, data: String) {
+        self.id = id
+        self.notes.text = note
+        self.textT.text = message
+        self.time.text = data
+    }
+
     // MARK: - Method buttonRightSetting
-    func buttonRightSetting() {
+    private func buttonRightSetting() {
         barButton.title = "Готово"
         barButton.target = self
         barButton.isEnabled = true
@@ -100,7 +100,7 @@ class NoteViewController: UIViewController, NoteViews {
     }
 
     // MARK: - Method constraintScroll
-    func constraintScroll() {
+    private func constraint() {
         scrolls.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor
         ).isActive = true
@@ -112,10 +112,7 @@ class NoteViewController: UIViewController, NoteViews {
         scrolls.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor
         ).isActive = true
-    }
 
-    // MARK: - Method constraintText
-    func constraintText() {
         textT.centerXAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.centerXAnchor,
             constant: +5
@@ -146,10 +143,7 @@ class NoteViewController: UIViewController, NoteViews {
             equalTo: view.safeAreaLayoutGuide.trailingAnchor,
             constant: -20
         ).isActive = true
-    }
 
-    // MARK: - Method constraintNote
-    func constraintNote() {
         notes.centerXAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.centerXAnchor
         ).isActive = true
@@ -175,10 +169,7 @@ class NoteViewController: UIViewController, NoteViews {
             equalTo: view.safeAreaLayoutGuide.trailingAnchor,
             constant: -70
         ).isActive = true
-    }
 
-    // MARK: - Method constraintTime
-    func constraintTime() {
         time.centerXAnchor.constraint(
             equalTo: view.centerXAnchor,
             constant: 0
@@ -207,18 +198,18 @@ class NoteViewController: UIViewController, NoteViews {
     }
 
     // MARK: - Method endEditingView
-    @objc func endEditingView() {
+    @objc private func endEditingView() {
         view.endEditing(true)
     }
     // MARK: - Method dateTextTitle
-    func dateTextTitle() {
+   private func dateTextTitle() {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
         time.text = dateFormater.string(from: Date())
     }
 
     // MARK: - Method backToVC
-    @objc func backToVC(send: UIButton) {
+    @objc private func backToVC(send: UIButton) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
         time.text = dateFormater.string(from: Date())

@@ -11,7 +11,7 @@ protocol SomeProtocol: AnyObject {
     func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String)
 }
 
-class ListViewController: UIViewController, SomeProtocol {
+class ListViewController: UIViewController {
 
     var note = [Note]()
 
@@ -76,13 +76,11 @@ class ListViewController: UIViewController, SomeProtocol {
         scroll.addSubview(stackView)
         view.addSubview(plusButton)
         view.addSubview(titl)
-        constraintTitlText()
-        constraintPlusButton()
         constraint()
     }
 
     // MARK: - Method addNoteForStack
-    func constraint() {
+    private func constraint() {
         scroll.centerXAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +0).isActive = true
         scroll.topAnchor.constraint(
@@ -109,10 +107,37 @@ class ListViewController: UIViewController, SomeProtocol {
         stackView.trailingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
 
+        titl.centerXAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -665).isActive = true
+        titl.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +10).isActive = true
+        titl.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +0).isActive = true
+        titl.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -845).isActive = true
+        titl.widthAnchor.constraint(equalToConstant: +100).isActive = true
+        titl.heightAnchor.constraint(equalToConstant: +30).isActive = true
+        titl.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: +130).isActive = true
+        titl.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -130).isActive = true
+
+        plusButton.centerXAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +350).isActive = true
+        plusButton.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +350).isActive = true
+        plusButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
+        plusButton.widthAnchor.constraint(
+            equalToConstant: 50).isActive = true
+        plusButton.heightAnchor.constraint(
+            equalToConstant: 50).isActive = true
+        plusButton.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
     }
 
     // MARK: - Method addNoteForStack
-    func addNoteForStack(noteView: NoteView, stack: UIStackView) {
+   private func addNoteForStack(noteView: NoteView, stack: UIStackView) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(gestureTap(_:)))
         noteView.addGestureRecognizer(tap)
 
@@ -145,8 +170,21 @@ class ListViewController: UIViewController, SomeProtocol {
         noteView.time.topAnchor.constraint(equalTo: noteView.topAnchor, constant: +70).isActive = true
         noteView.time.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: +15).isActive = true
 }
-    // MARK: - Method gestureTap
-    @objc func gestureTap(_ sender: UITapGestureRecognizer? = nil) {
+
+     // MARK: - Method tapButton
+     @objc private func tapButton(_ sender: UIButton) {
+        let noteVC = NoteViewController()
+        noteVC.delegateProtocol = self
+        switch sender {
+        case plusButton:
+            navigationController?.pushViewController(noteVC, animated: true)
+        default:
+            break
+        }
+    }
+
+      // MARK: - Method gestureTap
+      @objc private func gestureTap(_ sender: UITapGestureRecognizer? = nil) {
 
         guard let currentNoteView = sender?.view as? NoteView else { return }
 
@@ -159,12 +197,31 @@ class ListViewController: UIViewController, SomeProtocol {
                 print("CurrentNote ID\(currentNoteView.id)")
                 return $0.id == currentNoteView.id
             }) {
-            noteViewController.fetchData(id: selectNote.id,
-                                         textTime: selectNote.date,
-                                         textMesg: selectNote.text ?? "",
-                                         titleNot: selectNote.title ?? "")
-        }
+            noteViewController.addData(id: currentNoteView.id,
+                                       note: currentNoteView.note.text ?? "",
+                                       message: currentNoteView.message.text ?? "",
+                                       data: currentNoteView.time.text ?? "")
 
+        }
         navigationController?.pushViewController(noteViewController, animated: true)
-   }
+       }
+}
+
+extension ListViewController: SomeProtocol {
+    // MARK: - Method fetchDataViewOne
+    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String) {
+        let notes = Note(id: id, title: titleNot, text: textMesg, date: textTime)
+
+        if self.note.contains(where: { $0.id == id }) {
+            stackView.subviews.forEach {
+                guard let subview = $0 as? NoteView, subview.id == id else { return }
+                subview.set(with: notes)
+            }
+        } else {
+            self.note.append(notes)
+            let myView = NoteView()
+            myView.set(with: notes)
+            addNoteForStack(noteView: myView, stack: stackView)
+        }
+    }
 }
