@@ -9,19 +9,19 @@
 /* Begin PBXBuildFile section */
 		4497092B280712EC00D76313 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092A280712EC00D76313 /* Note.swift */; };
 		4497092D2807130800D76313 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4497092C2807130800D76313 /* ListViewController.swift */; };
+		44AC48862816B96300F59F74 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AC48852816B96300F59F74 /* ListTableViewCell.swift */; };
 		44CFE14827F5F6BF006F7A9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14727F5F6BF006F7A9F /* AppDelegate.swift */; };
 		44CFE14A27F5F6BF006F7A9F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14927F5F6BF006F7A9F /* SceneDelegate.swift */; };
 		44CFE14C27F5F6BF006F7A9F /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CFE14B27F5F6BF006F7A9F /* NoteViewController.swift */; };
 		44CFE15127F5F6BF006F7A9F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44CFE15027F5F6BF006F7A9F /* Assets.xcassets */; };
 		44CFE15427F5F6BF006F7A9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CFE15227F5F6BF006F7A9F /* LaunchScreen.storyboard */; };
-		44F53ACB28103A35002E3E71 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACA28103A35002E3E71 /* NoteView.swift */; };
-		44F53ACE28103F98002E3E71 /* ListView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACD28103F98002E3E71 /* ListView+Extension.swift */; };
 		44F53AD028103FB1002E3E71 /* NoteView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4497092A280712EC00D76313 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		4497092C2807130800D76313 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		44AC48852816B96300F59F74 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		44CFE14427F5F6BF006F7A9F /* UIKitProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CFE14727F5F6BF006F7A9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44CFE14927F5F6BF006F7A9F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -29,8 +29,6 @@
 		44CFE15027F5F6BF006F7A9F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44CFE15327F5F6BF006F7A9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44CFE15527F5F6BF006F7A9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		44F53ACA28103A35002E3E71 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
-		44F53ACD28103F98002E3E71 /* ListView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListView+Extension.swift"; sourceTree = "<group>"; };
 		44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,10 +54,19 @@
 		449709402807358B00D76313 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				44AC48842816B90100F59F74 /* ListViewCell */,
 				4497092C2807130800D76313 /* ListViewController.swift */,
 				44CFE14B27F5F6BF006F7A9F /* NoteViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		44AC48842816B90100F59F74 /* ListViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				44AC48852816B96300F59F74 /* ListTableViewCell.swift */,
+			);
+			path = ListViewCell;
 			sourceTree = "<group>";
 		};
 		44CDAEFB27FE21EA00ECB917 /* Resource */ = {
@@ -75,7 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				44F53ACC28103F47002E3E71 /* Extension */,
-				44F53AC928103A13002E3E71 /* Views */,
 				44970929280712DC00D76313 /* Model */,
 				449709402807358B00D76313 /* Controllers */,
 			);
@@ -118,18 +124,9 @@
 			path = UIKitProject;
 			sourceTree = "<group>";
 		};
-		44F53AC928103A13002E3E71 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				44F53ACA28103A35002E3E71 /* NoteView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		44F53ACC28103F47002E3E71 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				44F53ACD28103F98002E3E71 /* ListView+Extension.swift */,
 				44F53ACF28103FB1002E3E71 /* NoteView+Extension.swift */,
 			);
 			path = Extension;
@@ -228,10 +225,9 @@
 			files = (
 				44CFE14C27F5F6BF006F7A9F /* NoteViewController.swift in Sources */,
 				44CFE14827F5F6BF006F7A9F /* AppDelegate.swift in Sources */,
-				44F53ACE28103F98002E3E71 /* ListView+Extension.swift in Sources */,
 				4497092D2807130800D76313 /* ListViewController.swift in Sources */,
 				44CFE14A27F5F6BF006F7A9F /* SceneDelegate.swift in Sources */,
-				44F53ACB28103A35002E3E71 /* NoteView.swift in Sources */,
+				44AC48862816B96300F59F74 /* ListTableViewCell.swift in Sources */,
 				44F53AD028103FB1002E3E71 /* NoteView+Extension.swift in Sources */,
 				4497092B280712EC00D76313 /* Note.swift in Sources */,
 			);

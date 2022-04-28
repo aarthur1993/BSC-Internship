@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Note {
+struct Note: Hashable {
     // MARK: - Internal properties
     var id = UUID()
     var title: String?

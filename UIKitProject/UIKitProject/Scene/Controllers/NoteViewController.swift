@@ -7,11 +7,7 @@
 
 import UIKit
 
-protocol NoteViews {
-    func fetchData(id: UUID?, textTime: String, textMesg: String, titleNot: String)
-}
-
-class NoteViewController: UIViewController, NoteViews {
+class NoteViewController: UIViewController {
 
     var delegateProtocol: SomeProtocol?
 
@@ -229,10 +225,10 @@ class NoteViewController: UIViewController, NoteViews {
         navigationController?.popViewController(animated: true)
     }
 
-    func fetchData(id: UUID?, textTime: String, textMesg: String, titleNot: String) {
-        self.id = id
-        self.notes.text = titleNot
-        self.textT.text = textMesg
-        self.time.text = textTime
-    }
+    func addData(id: UUID, note: String, message: String, data: String) {
+            self.id = id
+            self.notes.text = note
+            self.textT.text = message
+            self.time.text = data
+        }
 }

@@ -15,18 +15,15 @@ class ListViewController: UIViewController, SomeProtocol {
 
     var note = [Note]()
 
-    lazy var scroll: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.layer.backgroundColor = UIColor.yellow.cgColor
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.indicatorStyle = .white
-        scrollView.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        return scrollView
+     var tableViews: UITableView = {
+       let tableView = UITableView()
+         tableView.translatesAutoresizingMaskIntoConstraints = false
+         tableView.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
+        return tableView
     }()
 
     lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
-        tap.view?.translatesAutoresizingMaskIntoConstraints = false
         tap.addTarget(self, action: #selector(tapButton))
         return tap
     }()
@@ -55,116 +52,141 @@ class ListViewController: UIViewController, SomeProtocol {
         return buttonPlus
     }()
 
-    var stackView: UIStackView = {
-        var stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 4.0
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-
-        stackView.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        return stackView
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         navigationController?.hidesBarsOnSwipe = true
         view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        view.addSubview(scroll)
-        scroll.addSubview(stackView)
-        view.addSubview(plusButton)
+        tableViews.addSubview(plusButton)
+        view.addSubview(tableViews)
         view.addSubview(titl)
-        constraintTitlText()
-        constraintPlusButton()
         constraint()
+
+        tableViews.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableViews.dataSource = self
+        tableViews.delegate = self
+        tableViews.separatorColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
     }
 
-    // MARK: - Method addNoteForStack
+    // MARK: - Method configTableView
     func constraint() {
-        scroll.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +0).isActive = true
-        scroll.topAnchor.constraint(
+        titl.centerXAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -665).isActive = true
+        titl.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +10).isActive = true
+        titl.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +0).isActive = true
-        scroll.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
-        scroll.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: +0).isActive = true
-        scroll.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -0).isActive = true
+        titl.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -845).isActive = true
+        titl.widthAnchor.constraint(equalToConstant: +100).isActive = true
+        titl.heightAnchor.constraint(equalToConstant: +30).isActive = true
+        titl.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: +130).isActive = true
+        titl.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -130).isActive = true
 
-        stackView.centerXAnchor.constraint(
-            equalTo: scroll.safeAreaLayoutGuide.centerXAnchor, constant: +10).isActive = true
-        stackView.topAnchor.constraint(
-            equalTo: scroll.topAnchor, constant: +40).isActive = true
-        stackView.bottomAnchor.constraint(
-           equalTo: scroll.bottomAnchor, constant: -749).isActive = true
-        stackView.widthAnchor.constraint(
-            equalToConstant: +358).isActive = true
-        stackView.heightAnchor.constraint(
-            equalToConstant: -1).isActive = true
-        stackView.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: +16).isActive = true
-        stackView.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        tableViews.translatesAutoresizingMaskIntoConstraints = false
+        tableViews.centerXAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor
+        ).isActive = true
+        tableViews.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor
+        ).isActive = true
+        tableViews.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +40
+        ).isActive = true
+        tableViews.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -5
+        ).isActive = true
+        tableViews.heightAnchor.constraint(
+            equalToConstant: 24
+        ).isActive = true
+        tableViews.widthAnchor.constraint(
+            equalToConstant: 300
+        ).isActive = true
+        tableViews.leadingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+            constant: 20
+        ).isActive = true
+        tableViews.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+            constant: -20
+        ).isActive = true
 
+        plusButton.centerXAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +350).isActive = true
+        plusButton.centerYAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +350).isActive = true
+        plusButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
+        plusButton.widthAnchor.constraint(
+            equalToConstant: 50).isActive = true
+        plusButton.heightAnchor.constraint(
+            equalToConstant: 50).isActive = true
+        plusButton.trailingAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
+    }
+    // MARK: - Method tapButton
+    @objc private func tapButton(_ sender: UIButton) {
+        let noteVC = NoteViewController()
+        noteVC.delegateProtocol = self
+        switch sender {
+        case plusButton:
+            navigationController?.pushViewController(noteVC, animated: true)
+        default:
+            break
+        }
+    }
+}
+
+extension ListViewController {
+    // MARK: - Method fetchDataView
+    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String) {
+            if let firstIndex = note.firstIndex(where: {$0.id == id}) {
+            self.note[firstIndex].title = titleNot
+            self.note[firstIndex].text = textMesg
+            self.note[firstIndex].date = textTime
+        } else {
+           self.note.append(Note(id: id, title: titleNot, text: textMesg, date: textTime))
+        }
+        tableViews.reloadData()
+    }
+}
+
+extension ListViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+        return note.count
+   }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ListTableViewCell
+
+        cell!.fetchData(notes: note[indexPath.row])
+
+       return cell!
+   }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let noteView = NoteViewController()
+        noteView.delegateProtocol = self
+
+            let index = note[indexPath.row]
+
+            noteView.addData(id: index.id,
+                             note: index.title ?? "",
+                             message: index.text ?? "",
+                             data: index.date )
+
+        navigationController?.pushViewController(noteView, animated: true)
     }
 
-    // MARK: - Method addNoteForStack
-    func addNoteForStack(noteView: NoteView, stack: UIStackView) {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(gestureTap(_:)))
-        noteView.addGestureRecognizer(tap)
-
-        noteView.backgroundColor = UIColor.white
-        noteView.layer.cornerRadius = 15
-        noteView.note.textAlignment = .left
-        noteView.note.textColor = .black
-        noteView.time.textColor = .black
-        noteView.message.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
-        noteView.note.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
-        noteView.time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
-        noteView.message.font = UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.medium)
-
-        stack.addArrangedSubview(noteView.note)
-        stack.addArrangedSubview(noteView.message)
-        stack.addArrangedSubview(noteView.time)
-        stack.addArrangedSubview(noteView)
-        noteView.addSubview(noteView.note)
-        noteView.addSubview(noteView.message)
-        noteView.addSubview(noteView.time)
-
-        noteView.heightAnchor.constraint(equalToConstant: +90).isActive = true
-        noteView.leadingAnchor.constraint(equalTo: stack.leadingAnchor, constant: +0).isActive = true
-        noteView.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -0).isActive = true
-
-        noteView.note.topAnchor.constraint(equalTo: noteView.topAnchor, constant: +10).isActive = true
-        noteView.note.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: +15).isActive = true
-        noteView.message.topAnchor.constraint(equalTo: noteView.topAnchor, constant: +30).isActive = true
-        noteView.message.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: +15).isActive = true
-        noteView.time.topAnchor.constraint(equalTo: noteView.topAnchor, constant: +70).isActive = true
-        noteView.time.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: +15).isActive = true
-}
-    // MARK: - Method gestureTap
-    @objc func gestureTap(_ sender: UITapGestureRecognizer? = nil) {
-
-        guard let currentNoteView = sender?.view as? NoteView else { return }
-
-        let noteViewController = NoteViewController()
-
-        noteViewController.delegateProtocol = self
-
-        if let selectNote = note.first(
-            where: {
-                print("CurrentNote ID\(currentNoteView.id)")
-                return $0.id == currentNoteView.id
-            }) {
-            noteViewController.fetchData(id: selectNote.id,
-                                         textTime: selectNote.date,
-                                         textMesg: selectNote.text ?? "",
-                                         titleNot: selectNote.title ?? "")
-        }
-
-        navigationController?.pushViewController(noteViewController, animated: true)
-   }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+  }
 }
