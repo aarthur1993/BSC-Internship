@@ -15,19 +15,21 @@ class NoteViewController: UIViewController {
 
     var id: UUID?
 
-    let label: UILabel = {
+   private let label: UILabel = {
         let lab = UILabel()
         lab.isHidden = true
         lab.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
         lab.textColor = .black
         return lab
     }()
-    let scrolls: UIScrollView = {
+
+   private let scrolls: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
-    var time: UITextField = {
+
+  private  var time: UITextField = {
         let textTime = UITextField()
         textTime.translatesAutoresizingMaskIntoConstraints = false
         textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
@@ -38,7 +40,8 @@ class NoteViewController: UIViewController {
         textTime.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
         return textTime
     }()
-    var notes: UITextField = {
+
+   private var notes: UITextField = {
         let textTitle = UITextField()
         textTitle.translatesAutoresizingMaskIntoConstraints = false
         textTitle.placeholder = "Введите название"
@@ -49,16 +52,15 @@ class NoteViewController: UIViewController {
         textTitle.text = ""
         return textTitle
     }()
-    var textT: UITextView = {
+
+   private var textT: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.becomeFirstResponder()
         textView.textColor = UIColor.black
         textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textView.textAlignment = .center
-        textView.text = """
-        """
         textView.textAlignment = .left
+        textView.becomeFirstResponder()
         textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
         return textView
     }()
@@ -74,25 +76,32 @@ class NoteViewController: UIViewController {
         scrolls.addSubview(time)
         scrolls.addSubview(notes)
         scrolls.addSubview(textT)
-        textT.adjustableForKeyboard()
         textT.delegate = self
         notes.delegate = self
-        time.delegate = self
-        buttonRightSetting()
+        textT.adjustableForKeyboard()
         constraintNote()
         constraintText()
         constraintTime()
         constraintScroll()
         dateTextTitle()
+
+        buttonRightSetting()
     }
 
     // MARK: - Method buttonRightSetting
     func buttonRightSetting() {
         barButton.title = "Готово"
+        barButton.isEnabled = false
         barButton.target = self
-        barButton.isEnabled = true
-        barButton.action = #selector(endEditingView)
+        barButton.action = #selector(endEdit)
         navigationItem.rightBarButtonItem = barButton
+    }
+
+    @objc func endEdit() {
+        if textT.text != nil, notes.text != nil {
+            barButton.isEnabled = false
+            view.endEditing(true)
+        }
     }
 
     // MARK: - Method constraintScroll
@@ -102,66 +111,42 @@ class NoteViewController: UIViewController {
         ).isActive = true
         scrolls.leftAnchor.constraint(
             equalTo: view.leftAnchor).isActive = true
-        scrolls.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor
+        scrolls.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor
         ).isActive = true
         scrolls.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor
         ).isActive = true
     }
 
-    // MARK: - Method constraintText
-    func constraintText() {
-        textT.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor,
-            constant: +5
+    // MARK: - Method constraintTime
+    func constraintTime() {
+        time.topAnchor.constraint(
+            equalTo: view.topAnchor,
+            constant: +121
         ).isActive = true
-        textT.centerYAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerYAnchor,
-            constant: +100
+        time.bottomAnchor.constraint(
+            equalTo: notes.bottomAnchor,
+            constant: -140).isActive = true
+        time.leftAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            constant: 20
         ).isActive = true
-        textT.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor,
-            constant: +149
-        ).isActive = true
-        textT.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-            constant: -145
-        ).isActive = true
-        textT.widthAnchor.constraint(
-            equalToConstant: +350
-        ).isActive = true
-        textT.heightAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.heightAnchor, constant: +510
-        ).isActive = true
-        textT.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: +20
-        ).isActive = true
-        textT.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+        time.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
     // MARK: - Method constraintNote
     func constraintNote() {
-        notes.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor
-        ).isActive = true
         notes.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor,
-            constant: +107
+            equalTo: textT.safeAreaLayoutGuide.topAnchor,
+            constant: +40
         ).isActive = true
         notes.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-            constant: -700
-        ).isActive = true
-        notes.heightAnchor.constraint(
-            equalToConstant: 24
-        ).isActive = true
-        notes.widthAnchor.constraint(
-            equalToConstant: 300
+            constant: -600
         ).isActive = true
         notes.leadingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leadingAnchor,
@@ -173,39 +158,26 @@ class NoteViewController: UIViewController {
         ).isActive = true
     }
 
-    // MARK: - Method constraintTime
-    func constraintTime() {
-        time.centerXAnchor.constraint(
-            equalTo: view.centerXAnchor,
-            constant: 0
+    // MARK: - Method constraintText
+    func constraintText() {
+        textT.topAnchor.constraint(
+            equalTo: notes.safeAreaLayoutGuide.topAnchor,
+            constant: +60
         ).isActive = true
-        time.topAnchor.constraint(
-            equalTo: view.topAnchor,
-            constant: +121
+        textT.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -145
         ).isActive = true
-        time.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
-            constant: -747).isActive = true
-        time.heightAnchor.constraint(
-            equalToConstant: 16
+        textT.leftAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            constant: +20
         ).isActive = true
-        time.widthAnchor.constraint(
-            equalToConstant: 350
-        ).isActive = true
-        time.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: 20
-        ).isActive = true
-        time.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+        textT.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
-    // MARK: - Method endEditingView
-    @objc func endEditingView() {
-        view.endEditing(true)
-    }
     // MARK: - Method dateTextTitle
     func dateTextTitle() {
         let dateFormater = DateFormatter()

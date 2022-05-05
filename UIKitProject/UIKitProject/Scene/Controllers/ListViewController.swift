@@ -60,7 +60,7 @@ class ListViewController: UIViewController, SomeProtocol {
         tableViews.addSubview(plusButton)
         view.addSubview(tableViews)
         view.addSubview(titl)
-        constraint()
+        constraintSetups()
 
         tableViews.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
         tableViews.dataSource = self
@@ -69,29 +69,23 @@ class ListViewController: UIViewController, SomeProtocol {
     }
 
     // MARK: - Method configTableView
-    func constraint() {
-        titl.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -665).isActive = true
-        titl.centerYAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +10).isActive = true
+    func constraintSetups() {
         titl.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +0).isActive = true
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +0
+        ).isActive = true
         titl.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -845).isActive = true
-        titl.widthAnchor.constraint(equalToConstant: +100).isActive = true
-        titl.heightAnchor.constraint(equalToConstant: +30).isActive = true
-        titl.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: +130).isActive = true
-        titl.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -130).isActive = true
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -845
+        ).isActive = true
+        titl.heightAnchor.constraint(
+            equalToConstant: +30
+        ).isActive = true
+        titl.leftAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            constant: +160
+        ).isActive = true
 
-        tableViews.translatesAutoresizingMaskIntoConstraints = false
-        tableViews.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor
-        ).isActive = true
-        tableViews.centerYAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerYAnchor
-        ).isActive = true
         tableViews.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor,
             constant: +40
@@ -100,33 +94,33 @@ class ListViewController: UIViewController, SomeProtocol {
             equalTo: view.safeAreaLayoutGuide.bottomAnchor,
             constant: -5
         ).isActive = true
-        tableViews.heightAnchor.constraint(
-            equalToConstant: 24
-        ).isActive = true
-        tableViews.widthAnchor.constraint(
-            equalToConstant: 300
-        ).isActive = true
-        tableViews.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+        tableViews.leftAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leftAnchor,
             constant: 20
         ).isActive = true
-        tableViews.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+        tableViews.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
 
-        plusButton.centerXAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: +350).isActive = true
-        plusButton.centerYAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: +350).isActive = true
         plusButton.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
+            equalTo: titl.safeAreaLayoutGuide.bottomAnchor,
+            constant: +655
+        ).isActive = true
         plusButton.widthAnchor.constraint(
-            equalToConstant: 50).isActive = true
+            equalToConstant: 50
+        ).isActive = true
         plusButton.heightAnchor.constraint(
-            equalToConstant: 50).isActive = true
-        plusButton.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
+            equalToConstant: 50
+        ).isActive = true
+        plusButton.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor,
+            constant: -25
+        ).isActive = true
+        plusButton.leftAnchor.constraint(
+            equalTo: titl.safeAreaLayoutGuide.leftAnchor,
+            constant: +155
+        ).isActive = true
     }
     // MARK: - Method tapButton
     @objc private func tapButton(_ sender: UIButton) {

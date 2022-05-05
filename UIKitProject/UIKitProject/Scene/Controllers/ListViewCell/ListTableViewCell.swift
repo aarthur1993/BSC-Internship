@@ -8,9 +8,8 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-    var cell = "cell"
 
-    var view: UIView = {
+   private var view: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.white
@@ -18,7 +17,7 @@ class ListTableViewCell: UITableViewCell {
         return view
     }()
 
-    var note: UILabel = {
+   private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
         note.textAlignment = .center
@@ -27,7 +26,7 @@ class ListTableViewCell: UITableViewCell {
         return note
     }()
 
-    var message: UILabel = {
+   private var message: UILabel = {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.textColor = UIColor(red: 0.675, green: 0.675, blue: 0.675, alpha: 1)
@@ -36,7 +35,7 @@ class ListTableViewCell: UITableViewCell {
         return message
     }()
 
-    var time: UILabel = {
+   private var time: UILabel = {
         let time = UILabel()
         time.translatesAutoresizingMaskIntoConstraints = false
         time.textAlignment = .center
@@ -55,7 +54,7 @@ class ListTableViewCell: UITableViewCell {
         view.addSubview(time)
         contentView.addSubview(view)
         backgroundConfiguration = UIBackgroundConfiguration.clear()
-        constraint()
+        constraintSetup()
         selectionStyle = .none
     }
 
@@ -67,9 +66,7 @@ class ListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func constraint() {
-
-        view.translatesAutoresizingMaskIntoConstraints = false
+   private func constraintSetup() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +2
@@ -77,9 +74,6 @@ class ListTableViewCell: UITableViewCell {
         view.bottomAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
             constant: -3
-        ).isActive = true
-        view.heightAnchor.constraint(
-            equalToConstant: 424
         ).isActive = true
         view.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
@@ -90,7 +84,6 @@ class ListTableViewCell: UITableViewCell {
             constant: 0
         ).isActive = true
 
-        note.translatesAutoresizingMaskIntoConstraints = false
         note.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +10
@@ -99,15 +92,11 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
             constant: -60
         ).isActive = true
-        note.heightAnchor.constraint(
-            equalToConstant: 24
-        ).isActive = true
         note.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
 
-        message.translatesAutoresizingMaskIntoConstraints = false
         message.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +35
@@ -116,14 +105,11 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
             constant: -45
         ).isActive = true
-        message.heightAnchor.constraint(
-            equalToConstant: 14
-        ).isActive = true
         message.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
-        time.translatesAutoresizingMaskIntoConstraints = false
+
         time.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +70
@@ -131,9 +117,6 @@ class ListTableViewCell: UITableViewCell {
         time.bottomAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
             constant: -10
-        ).isActive = true
-        time.heightAnchor.constraint(
-            equalToConstant: 24
         ).isActive = true
         time.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,

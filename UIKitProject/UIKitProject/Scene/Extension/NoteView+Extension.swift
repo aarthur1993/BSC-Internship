@@ -8,22 +8,18 @@
 import Foundation
 import UIKit
 
-// MARK: - Method textViewDidEndEditing, textViewDidChangeSelection
+// MARK: - Method UITextViewDelegate
 extension NoteViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        barButton.isEnabled = false
-    }
-    func textViewDidChangeSelection(_ textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.becomeFirstResponder()
         barButton.isEnabled = true
     }
 }
 
-// MARK: - Method textFieldDidEndEditing, textFieldDidChangeSelection
+// MARK: - Method UITextFieldDelegate
 extension NoteViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        barButton.isEnabled = false
-    }
-    func textFieldDidChangeSelection(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.becomeFirstResponder()
         barButton.isEnabled = true
     }
 }
