@@ -8,16 +8,16 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-
-   private var view: UIView = {
+    
+    private var view: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-   private var note: UILabel = {
+    
+    private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
         note.textAlignment = .center
@@ -25,8 +25,8 @@ class ListTableViewCell: UITableViewCell {
         note.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         return note
     }()
-
-   private var message: UILabel = {
+    
+    private var message: UILabel = {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.textColor = UIColor(red: 0.675, green: 0.675, blue: 0.675, alpha: 1)
@@ -34,8 +34,8 @@ class ListTableViewCell: UITableViewCell {
         message.textAlignment = .center
         return message
     }()
-
-   private var time: UILabel = {
+    
+    private var time: UILabel = {
         let time = UILabel()
         time.translatesAutoresizingMaskIntoConstraints = false
         time.textAlignment = .center
@@ -43,7 +43,7 @@ class ListTableViewCell: UITableViewCell {
         time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
         return time
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.layer.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100).cgColor
@@ -57,16 +57,16 @@ class ListTableViewCell: UITableViewCell {
         constraintSetup()
         selectionStyle = .none
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-   private func constraintSetup() {
+    
+    private func constraintSetup() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +2
@@ -83,7 +83,7 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
             constant: 0
         ).isActive = true
-
+        
         note.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +10
@@ -96,7 +96,7 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
-
+        
         message.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +35
@@ -109,7 +109,7 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
-
+        
         time.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +70
@@ -123,7 +123,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-
+    
     func fetchData(notes: Note) {
         self.note.text = notes.title
         self.message.text = notes.text

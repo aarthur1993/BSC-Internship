@@ -15,7 +15,7 @@ class NoteViewController: UIViewController {
 
     var id: UUID?
 
-   private let label: UILabel = {
+    private let label: UILabel = {
         let lab = UILabel()
         lab.isHidden = true
         lab.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
@@ -23,13 +23,13 @@ class NoteViewController: UIViewController {
         return lab
     }()
 
-   private let scrolls: UIScrollView = {
+    private let scrolls: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
 
-  private  var time: UITextField = {
+    private  var time: UITextField = {
         let textTime = UITextField()
         textTime.translatesAutoresizingMaskIntoConstraints = false
         textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
@@ -41,7 +41,7 @@ class NoteViewController: UIViewController {
         return textTime
     }()
 
-   private var notes: UITextField = {
+    private var notes: UITextField = {
         let textTitle = UITextField()
         textTitle.translatesAutoresizingMaskIntoConstraints = false
         textTitle.placeholder = "Введите название"
@@ -53,7 +53,7 @@ class NoteViewController: UIViewController {
         return textTitle
     }()
 
-   private var textT: UITextView = {
+    private var textT: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = UIColor.black
@@ -65,7 +65,7 @@ class NoteViewController: UIViewController {
         return textView
     }()
 
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = false
         view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
@@ -198,9 +198,9 @@ class NoteViewController: UIViewController {
     }
 
     func addData(id: UUID, note: String, message: String, data: String) {
-            self.id = id
-            self.notes.text = note
-            self.textT.text = message
-            self.time.text = data
-        }
+        self.id = id
+        self.notes.text = note
+        self.textT.text = message
+        self.time.text = data
+    }
 }

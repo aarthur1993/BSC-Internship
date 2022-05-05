@@ -25,8 +25,8 @@ extension NoteViewController: UITextFieldDelegate {
 }
 
 // MARK: - Method adjustableForKeyboard
- extension UITextView {
-     func adjustableForKeyboard() {
+extension UITextView {
+    func adjustableForKeyboard() {
         let notoficationCenter = NotificationCenter.default
         notoficationCenter.addObserver(
             self,
@@ -38,11 +38,11 @@ extension NoteViewController: UITextFieldDelegate {
             selector: #selector(adjustForKeyboard),
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
-     }
+    }
     @objc private func adjustForKeyboard(notification: Notification) {
         guard let keyboardValue =
-                  notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as?
-                               NSValue else { return }
+                notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as?
+                NSValue else { return }
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = convert(keyboardScreenEndFrame, from: window)
         if notification.name == UIResponder.keyboardWillHideNotification {
