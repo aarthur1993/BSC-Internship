@@ -122,12 +122,13 @@ class NoteViewController: UIViewController {
     // MARK: - Method constraintTime
     func constraintTime() {
         time.topAnchor.constraint(
-            equalTo: view.topAnchor,
-            constant: +121
+            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            constant: +15
         ).isActive = true
         time.bottomAnchor.constraint(
-            equalTo: notes.bottomAnchor,
-            constant: -140).isActive = true
+            equalTo: notes.safeAreaLayoutGuide.bottomAnchor,
+            constant: -60
+        ).isActive = true
         time.leftAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leftAnchor,
             constant: 20
@@ -141,20 +142,20 @@ class NoteViewController: UIViewController {
     // MARK: - Method constraintNote
     func constraintNote() {
         notes.topAnchor.constraint(
-            equalTo: textT.safeAreaLayoutGuide.topAnchor,
-            constant: +40
+            equalTo: time.safeAreaLayoutGuide.topAnchor,
+            constant: +60
         ).isActive = true
         notes.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-            constant: -600
+            equalTo: textT.safeAreaLayoutGuide.bottomAnchor,
+            constant: -450
         ).isActive = true
-        notes.leadingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: 20
+        notes.leftAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            constant: +20
         ).isActive = true
-        notes.trailingAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-            constant: -70
+        notes.rightAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.rightAnchor,
+            constant: -20
         ).isActive = true
     }
 

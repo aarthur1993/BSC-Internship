@@ -8,7 +8,7 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-    
+
     private var view: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
@@ -16,7 +16,7 @@ class ListTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +25,7 @@ class ListTableViewCell: UITableViewCell {
         note.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         return note
     }()
-    
+
     private var message: UILabel = {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ class ListTableViewCell: UITableViewCell {
         message.textAlignment = .center
         return message
     }()
-    
+
     private var time: UILabel = {
         let time = UILabel()
         time.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class ListTableViewCell: UITableViewCell {
         time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
         return time
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.layer.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100).cgColor
@@ -57,15 +57,15 @@ class ListTableViewCell: UITableViewCell {
         constraintSetup()
         selectionStyle = .none
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
+
     private func constraintSetup() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
@@ -83,36 +83,36 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
             constant: 0
         ).isActive = true
-        
+
         note.topAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.topAnchor,
+            equalTo: view.topAnchor,
             constant: +10
         ).isActive = true
         note.bottomAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
-            constant: -60
+            equalTo: message.safeAreaLayoutGuide.bottomAnchor,
+            constant: -20
         ).isActive = true
         note.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
-        
+
         message.topAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.topAnchor,
-            constant: +35
+            equalTo: note.topAnchor,
+            constant: +25
         ).isActive = true
         message.bottomAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
-            constant: -45
+            equalTo: time.safeAreaLayoutGuide.bottomAnchor,
+            constant: -30
         ).isActive = true
         message.leadingAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
-        
+
         time.topAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.topAnchor,
-            constant: +70
+            equalTo: message.safeAreaLayoutGuide.topAnchor,
+            constant: +30
         ).isActive = true
         time.bottomAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
@@ -123,7 +123,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-    
+
     func fetchData(notes: Note) {
         self.note.text = notes.title
         self.message.text = notes.text
