@@ -54,7 +54,10 @@ class ListTableViewCell: UITableViewCell {
         view.addSubview(time)
         contentView.addSubview(view)
         backgroundConfiguration = UIBackgroundConfiguration.clear()
-        constraintSetup()
+        constraintView()
+        constraintMessage()
+        constraintNote()
+        constraintTime()
         selectionStyle = .none
     }
 
@@ -66,7 +69,8 @@ class ListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    private func constraintSetup() {
+    // MARK: - Method constraintView
+    private func constraintView() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +2
@@ -83,7 +87,10 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
             constant: 0
         ).isActive = true
+    }
 
+    // MARK: - Method constraintNote
+    func constraintNote() {
         note.topAnchor.constraint(
             equalTo: view.topAnchor,
             constant: +10
@@ -96,7 +103,10 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
+    }
 
+    // MARK: - Method constraintMessage
+    func constraintMessage() {
         message.topAnchor.constraint(
             equalTo: note.topAnchor,
             constant: +25
@@ -109,7 +119,10 @@ class ListTableViewCell: UITableViewCell {
             equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
             constant: 20
         ).isActive = true
+    }
 
+    // MARK: - Method constraintTime
+    func constraintTime() {
         time.topAnchor.constraint(
             equalTo: message.safeAreaLayoutGuide.topAnchor,
             constant: +30
@@ -124,9 +137,10 @@ class ListTableViewCell: UITableViewCell {
         ).isActive = true
     }
 
-    func fetchData(notes: Note) {
-        self.note.text = notes.title
-        self.message.text = notes.text
-        self.time.text = notes.date
+    // MARK: - Method update
+    func update(model: Note) {
+        note.text = model.title
+        message.text = model.text
+        time.text = model.date
     }
 }

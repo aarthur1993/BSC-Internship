@@ -9,11 +9,11 @@ import UIKit
 
 class NoteViewController: UIViewController {
 
-    var delegateProtocol: SomeProtocol?
+    weak var delegateProtocol: ListViewControllerDataSource?
 
     @objc let barButton = UIBarButtonItem()
 
-    var id: UUID?
+    private var identifire: UUID?
 
     private let label: UILabel = {
         let lab = UILabel()
@@ -53,7 +53,7 @@ class NoteViewController: UIViewController {
         return textTitle
     }()
 
-    private var textT: UITextView = {
+    private var text: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = UIColor.black
@@ -75,10 +75,10 @@ class NoteViewController: UIViewController {
         view.addSubview(scrolls)
         scrolls.addSubview(time)
         scrolls.addSubview(notes)
-        scrolls.addSubview(textT)
-        textT.delegate = self
+        scrolls.addSubview(text)
+        text.delegate = self
         notes.delegate = self
-        textT.adjustableForKeyboard()
+        text.adjustableForKeyboard()
         constraintNote()
         constraintText()
         constraintTime()
@@ -98,7 +98,7 @@ class NoteViewController: UIViewController {
     }
 
     @objc func endEdit() {
-        if textT.text != nil, notes.text != nil {
+        if text.text != nil, notes.text != nil {
             barButton.isEnabled = false
             view.endEditing(true)
         }
@@ -110,7 +110,8 @@ class NoteViewController: UIViewController {
             equalTo: view.safeAreaLayoutGuide.topAnchor
         ).isActive = true
         scrolls.leftAnchor.constraint(
-            equalTo: view.leftAnchor).isActive = true
+            equalTo: view.safeAreaLayoutGuide.leftAnchor
+        ).isActive = true
         scrolls.rightAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.rightAnchor
         ).isActive = true
@@ -122,19 +123,19 @@ class NoteViewController: UIViewController {
     // MARK: - Method constraintTime
     func constraintTime() {
         time.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor,
+            equalTo: scrolls.topAnchor,
             constant: +15
         ).isActive = true
         time.bottomAnchor.constraint(
-            equalTo: notes.safeAreaLayoutGuide.bottomAnchor,
+            equalTo: notes.bottomAnchor,
             constant: -60
         ).isActive = true
         time.leftAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
             constant: 20
         ).isActive = true
         time.rightAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.rightAnchor,
+            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
@@ -142,39 +143,39 @@ class NoteViewController: UIViewController {
     // MARK: - Method constraintNote
     func constraintNote() {
         notes.topAnchor.constraint(
-            equalTo: time.safeAreaLayoutGuide.topAnchor,
+            equalTo: time.topAnchor,
             constant: +60
         ).isActive = true
         notes.bottomAnchor.constraint(
-            equalTo: textT.safeAreaLayoutGuide.bottomAnchor,
+            equalTo: text.bottomAnchor,
             constant: -450
         ).isActive = true
         notes.leftAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
             constant: +20
         ).isActive = true
         notes.rightAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.rightAnchor,
+            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
     // MARK: - Method constraintText
     func constraintText() {
-        textT.topAnchor.constraint(
-            equalTo: notes.safeAreaLayoutGuide.topAnchor,
+        text.topAnchor.constraint(
+            equalTo: notes.topAnchor,
             constant: +60
         ).isActive = true
-        textT.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+        text.bottomAnchor.constraint(
+            equalTo: scrolls.bottomAnchor,
             constant: -145
         ).isActive = true
-        textT.leftAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leftAnchor,
+        text.leftAnchor.constraint(
+            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
             constant: +20
         ).isActive = true
-        textT.rightAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.rightAnchor,
+        text.rightAnchor.constraint(
+            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
@@ -191,17 +192,18 @@ class NoteViewController: UIViewController {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
         time.text = dateFormater.string(from: Date())
-        delegateProtocol?.fetchDataView(id: id ?? UUID(),
-                                        textTime: time.text ?? "",
-                                        textMesg: textT.text ?? "",
-                                        titleNot: notes.text ?? "")
+        delegateProtocol?.fetchDataView(id: identifire ?? UUID(),
+                                        time: time.text ?? "",
+                                        message: text.text ?? "",
+                                        title: notes.text ?? "")
         navigationController?.popViewController(animated: true)
     }
 
-    func addData(id: UUID, note: String, message: String, data: String) {
-        self.id = id
-        self.notes.text = note
-        self.textT.text = message
-        self.time.text = data
+    // MARK: - Method update
+    func update(id: UUID, note: String, message: String, data: String) {
+        identifire = id
+        notes.text = note
+        text.text = message
+        time.text = data
     }
 }

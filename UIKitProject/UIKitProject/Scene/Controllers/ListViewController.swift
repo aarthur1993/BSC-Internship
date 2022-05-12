@@ -7,35 +7,33 @@
 
 import UIKit
 
-protocol SomeProtocol: AnyObject {
-    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String)
+protocol ListViewControllerDataSource: AnyObject {
+    func fetchDataView(id: UUID, time: String, message: String, title: String)
 }
 
-class ListViewController: UIViewController, SomeProtocol {
+class ListViewController: UIViewController, ListViewControllerDataSource {
 
-    var note = [Note]()
+    private var note = [Note]()
 
-    var tableViews: UITableView = {
+    private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
         return tableView
     }()
 
-    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+    let tapGestureRecognizer: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
-        tap.addTarget(self, action: #selector(tapButton))
         return tap
     }()
 
-    lazy var plusButton: UIButton = {
+    let plusButton: UIButton = {
         let buttonPlus = UIButton()
         buttonPlus.translatesAutoresizingMaskIntoConstraints = false
         buttonPlus.setImage(UIImage(named: "+"), for: .normal)
         buttonPlus.setImage(UIImage(named: "Ellipse 2"), for: .highlighted)
         buttonPlus.clipsToBounds = true
         buttonPlus.titleLabel?.font = UIFont.systemFont(ofSize: 37, weight: UIFont.Weight.regular)
-        buttonPlus.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
         buttonPlus.layer.masksToBounds = false
         buttonPlus.layer.cornerRadius = 24
         buttonPlus.backgroundColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1)
@@ -46,42 +44,44 @@ class ListViewController: UIViewController, SomeProtocol {
         super.viewDidLoad()
         navigationItem.title = "Заметки"
         view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        tableViews.addSubview(plusButton)
-        view.addSubview(tableViews)
+        tableView.addSubview(plusButton)
+        view.addSubview(tableView)
         constraintSetups()
 
-        tableViews.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableViews.dataSource = self
-        tableViews.delegate = self
-        tableViews.separatorColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
+        plusButton.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
+        tapGestureRecognizer.addTarget(self, action: #selector(tapButton))
+
+        tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
     }
 
     // MARK: - Method configTableView
     func constraintSetups() {
-
-        tableViews.topAnchor.constraint(
+        tableView.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor,
             constant: +10
         ).isActive = true
-        tableViews.bottomAnchor.constraint(
+        tableView.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor,
             constant: -0
         ).isActive = true
-        tableViews.leftAnchor.constraint(
+        tableView.leftAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leftAnchor,
             constant: 20
         ).isActive = true
-        tableViews.rightAnchor.constraint(
+        tableView.rightAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
 
         plusButton.topAnchor.constraint(
-            equalTo: tableViews.topAnchor,
+            equalTo: tableView.topAnchor,
             constant: +610
         ).isActive = true
         plusButton.bottomAnchor.constraint(
-            equalTo: tableViews.bottomAnchor,
+            equalTo: tableView.bottomAnchor,
             constant: -100
         ).isActive = true
         plusButton.widthAnchor.constraint(
@@ -91,11 +91,11 @@ class ListViewController: UIViewController, SomeProtocol {
             equalToConstant: 50
         ).isActive = true
         plusButton.rightAnchor.constraint(
-            equalTo: tableViews.rightAnchor,
+            equalTo: tableView.rightAnchor,
             constant: -10
         ).isActive = true
         plusButton.leftAnchor.constraint(
-            equalTo: tableViews.leftAnchor,
+            equalTo: tableView.leftAnchor,
             constant: +290
         ).isActive = true
     }
@@ -114,15 +114,15 @@ class ListViewController: UIViewController, SomeProtocol {
 
 extension ListViewController {
     // MARK: - Method fetchDataView
-    func fetchDataView(id: UUID, textTime: String, textMesg: String, titleNot: String) {
+    func fetchDataView(id: UUID, time: String, message: String, title: String) {
         if let firstIndex = note.firstIndex(where: {$0.id == id}) {
-            self.note[firstIndex].title = titleNot
-            self.note[firstIndex].text = textMesg
-            self.note[firstIndex].date = textTime
+            self.note[firstIndex].title = title
+            self.note[firstIndex].text = message
+            self.note[firstIndex].date = time
         } else {
-            self.note.append(Note(id: id, title: titleNot, text: textMesg, date: textTime))
+            self.note.append(Note(id: id, title: title, text: message, date: time))
         }
-        tableViews.reloadData()
+        tableView.reloadData()
     }
 }
 
@@ -137,7 +137,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ListTableViewCell
 
-        cell!.fetchData(notes: note[indexPath.row])
+        cell!.update(model: note[indexPath.row])
 
         return cell!
     }
@@ -149,10 +149,10 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
 
         let index = note[indexPath.row]
 
-        noteView.addData(id: index.id,
-                         note: index.title ?? "",
-                         message: index.text ?? "",
-                         data: index.date )
+        noteView.update(id: index.id,
+                        note: index.title ?? "",
+                        message: index.text ?? "",
+                        data: index.date )
 
         navigationController?.pushViewController(noteView, animated: true)
     }
