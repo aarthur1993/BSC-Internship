@@ -13,6 +13,7 @@ extension NoteViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.becomeFirstResponder()
         barButton.isEnabled = true
+        barButton.title = "Готово"
     }
 }
 
@@ -21,6 +22,7 @@ extension NoteViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.becomeFirstResponder()
         barButton.isEnabled = true
+        barButton.title = "Готово"
     }
 }
 

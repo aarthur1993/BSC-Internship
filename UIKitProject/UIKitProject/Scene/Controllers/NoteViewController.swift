@@ -23,13 +23,13 @@ class NoteViewController: UIViewController {
         return lab
     }()
 
-    private let scrolls: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
 
-    private  var time: UITextField = {
+    private var time: UITextField = {
         let textTime = UITextField()
         textTime.translatesAutoresizingMaskIntoConstraints = false
         textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
@@ -72,10 +72,10 @@ class NoteViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
                                                            style: .done, target: self,
                                                            action: #selector(backToVC))
-        view.addSubview(scrolls)
-        scrolls.addSubview(time)
-        scrolls.addSubview(notes)
-        scrolls.addSubview(text)
+        view.addSubview(scrollView)
+        scrollView.addSubview(time)
+        scrollView.addSubview(notes)
+        scrollView.addSubview(text)
         text.delegate = self
         notes.delegate = self
         text.adjustableForKeyboard()
@@ -88,8 +88,8 @@ class NoteViewController: UIViewController {
         buttonRightSetting()
     }
 
-    // MARK: - Method buttonRightSetting
-    func buttonRightSetting() {
+    // MARK: - Private
+    private func buttonRightSetting() {
         barButton.title = "Готово"
         barButton.isEnabled = false
         barButton.target = self
@@ -97,33 +97,34 @@ class NoteViewController: UIViewController {
         navigationItem.rightBarButtonItem = barButton
     }
 
-    @objc func endEdit() {
+    // MARK: - Private
+    @objc private func endEdit() {
         if text.text != nil, notes.text != nil {
-            barButton.isEnabled = false
+            barButton.title = ""
             view.endEditing(true)
         }
     }
 
-    // MARK: - Method constraintScroll
-    func constraintScroll() {
-        scrolls.topAnchor.constraint(
+    // MARK: - Private
+    private func constraintScroll() {
+        scrollView.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor
         ).isActive = true
-        scrolls.leftAnchor.constraint(
+        scrollView.leftAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leftAnchor
         ).isActive = true
-        scrolls.rightAnchor.constraint(
+        scrollView.rightAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.rightAnchor
         ).isActive = true
-        scrolls.bottomAnchor.constraint(
+        scrollView.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor
         ).isActive = true
     }
 
-    // MARK: - Method constraintTime
-    func constraintTime() {
+    // MARK: - Private
+    private func constraintTime() {
         time.topAnchor.constraint(
-            equalTo: scrolls.topAnchor,
+            equalTo: scrollView.topAnchor,
             constant: +15
         ).isActive = true
         time.bottomAnchor.constraint(
@@ -131,17 +132,17 @@ class NoteViewController: UIViewController {
             constant: -60
         ).isActive = true
         time.leftAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
             constant: 20
         ).isActive = true
         time.rightAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
-    // MARK: - Method constraintNote
-    func constraintNote() {
+    // MARK: - Private
+    private func constraintNote() {
         notes.topAnchor.constraint(
             equalTo: time.topAnchor,
             constant: +60
@@ -151,44 +152,44 @@ class NoteViewController: UIViewController {
             constant: -450
         ).isActive = true
         notes.leftAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
             constant: +20
         ).isActive = true
         notes.rightAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
-    // MARK: - Method constraintText
-    func constraintText() {
+    // MARK: - Private
+    private func constraintText() {
         text.topAnchor.constraint(
             equalTo: notes.topAnchor,
             constant: +60
         ).isActive = true
         text.bottomAnchor.constraint(
-            equalTo: scrolls.bottomAnchor,
-            constant: -145
+            equalTo: scrollView.bottomAnchor,
+            constant: -20
         ).isActive = true
         text.leftAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.leftAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
             constant: +20
         ).isActive = true
         text.rightAnchor.constraint(
-            equalTo: scrolls.safeAreaLayoutGuide.rightAnchor,
+            equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
             constant: -20
         ).isActive = true
     }
 
-    // MARK: - Method dateTextTitle
-    func dateTextTitle() {
+    // MARK: - Private
+    private func dateTextTitle() {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
         time.text = dateFormater.string(from: Date())
     }
 
-    // MARK: - Method backToVC
-    @objc func backToVC(send: UIButton) {
+    // MARK: - Private
+    @objc private func backToVC(send: UIButton) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yyyy"
         time.text = dateFormater.string(from: Date())

@@ -22,12 +22,12 @@ class ListViewController: UIViewController, ListViewControllerDataSource {
         return tableView
     }()
 
-    let tapGestureRecognizer: UITapGestureRecognizer = {
+    private let tapGestureRecognizer: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
         return tap
     }()
 
-    let plusButton: UIButton = {
+    private let plusButton: UIButton = {
         let buttonPlus = UIButton()
         buttonPlus.translatesAutoresizingMaskIntoConstraints = false
         buttonPlus.setImage(UIImage(named: "+"), for: .normal)
@@ -57,8 +57,8 @@ class ListViewController: UIViewController, ListViewControllerDataSource {
         tableView.separatorColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
     }
 
-    // MARK: - Method configTableView
-    func constraintSetups() {
+    // MARK: - Private
+    private func constraintSetups() {
         tableView.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor,
             constant: +10
@@ -99,7 +99,7 @@ class ListViewController: UIViewController, ListViewControllerDataSource {
             constant: +290
         ).isActive = true
     }
-    // MARK: - Method tapButton
+    // MARK: - Private
     @objc private func tapButton(_ sender: UIButton) {
         let noteVC = NoteViewController()
         noteVC.delegateProtocol = self
@@ -110,10 +110,7 @@ class ListViewController: UIViewController, ListViewControllerDataSource {
             break
         }
     }
-}
 
-extension ListViewController {
-    // MARK: - Method fetchDataView
     func fetchDataView(id: UUID, time: String, message: String, title: String) {
         if let firstIndex = note.firstIndex(where: {$0.id == id}) {
             self.note[firstIndex].title = title

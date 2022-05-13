@@ -8,7 +8,7 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-
+    
     private var view: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
@@ -16,7 +16,7 @@ class ListTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +25,7 @@ class ListTableViewCell: UITableViewCell {
         note.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         return note
     }()
-
+    
     private var message: UILabel = {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ class ListTableViewCell: UITableViewCell {
         message.textAlignment = .center
         return message
     }()
-
+    
     private var time: UILabel = {
         let time = UILabel()
         time.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class ListTableViewCell: UITableViewCell {
         time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
         return time
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.layer.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100).cgColor
@@ -60,16 +60,16 @@ class ListTableViewCell: UITableViewCell {
         constraintTime()
         selectionStyle = .none
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-    // MARK: - Method constraintView
+    
+    // MARK: - Private
     private func constraintView() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
@@ -88,9 +88,9 @@ class ListTableViewCell: UITableViewCell {
             constant: 0
         ).isActive = true
     }
-
-    // MARK: - Method constraintNote
-    func constraintNote() {
+    
+    // MARK: - Private
+    private func constraintNote() {
         note.topAnchor.constraint(
             equalTo: view.topAnchor,
             constant: +10
@@ -104,9 +104,9 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-
-    // MARK: - Method constraintMessage
-    func constraintMessage() {
+    
+    // MARK: - Private
+    private func constraintMessage() {
         message.topAnchor.constraint(
             equalTo: note.topAnchor,
             constant: +25
@@ -120,9 +120,9 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-
-    // MARK: - Method constraintTime
-    func constraintTime() {
+    
+    // MARK: - Private
+    private func constraintTime() {
         time.topAnchor.constraint(
             equalTo: message.safeAreaLayoutGuide.topAnchor,
             constant: +30
@@ -136,8 +136,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-
-    // MARK: - Method update
+    
     func update(model: Note) {
         note.text = model.title
         message.text = model.text
