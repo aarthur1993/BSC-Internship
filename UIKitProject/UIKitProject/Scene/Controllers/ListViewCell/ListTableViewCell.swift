@@ -54,10 +54,7 @@ class ListTableViewCell: UITableViewCell {
         view.addSubview(time)
         contentView.addSubview(view)
         backgroundConfiguration = UIBackgroundConfiguration.clear()
-        constraintView()
-        constraintMessage()
-        constraintNote()
-        constraintTime()
+        setupСonstraint()
         selectionStyle = .none
     }
     
@@ -70,7 +67,7 @@ class ListTableViewCell: UITableViewCell {
     }
     
     // MARK: - Private
-    private func constraintView() {
+    private func setupСonstraint() {
         view.topAnchor.constraint(
             equalTo: contentView.safeAreaLayoutGuide.topAnchor,
             constant: +2
@@ -88,9 +85,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 0
         ).isActive = true
     }
-    
-    // MARK: - Private
-    private func constraintNote() {
+
         note.topAnchor.constraint(
             equalTo: view.topAnchor,
             constant: +10
@@ -104,9 +99,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-    
-    // MARK: - Private
-    private func constraintMessage() {
+
         message.topAnchor.constraint(
             equalTo: note.topAnchor,
             constant: +25
@@ -120,9 +113,7 @@ class ListTableViewCell: UITableViewCell {
             constant: 20
         ).isActive = true
     }
-    
-    // MARK: - Private
-    private func constraintTime() {
+
         time.topAnchor.constraint(
             equalTo: message.safeAreaLayoutGuide.topAnchor,
             constant: +30
