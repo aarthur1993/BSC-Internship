@@ -9,14 +9,6 @@ import UIKit
 
 class ListTableViewCell: UITableViewCell {
 
-    private var view: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 15
-        view.backgroundColor = UIColor.white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
@@ -46,16 +38,15 @@ class ListTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.layer.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100).cgColor
-        contentView.layer.cornerRadius = 15
-        contentView.tintColor = .green
-        view.addSubview(note)
-        view.addSubview(message)
-        view.addSubview(time)
-        contentView.addSubview(view)
         backgroundConfiguration = UIBackgroundConfiguration.clear()
+        contentView.layer.cornerRadius = 16
+        contentView.layer.backgroundColor =  UIColor.white.cgColor
+
+        contentView.addSubview(note)
+        contentView.addSubview(message)
+        contentView.addSubview(time)
+
         setupСonstraint()
-        selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
@@ -66,27 +57,24 @@ class ListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
+    override func layoutSubviews() {
+        print("\(subviews)")
+        for control in subviews {
+            if type(of: control) === NSClassFromString("UITableViewCellEditControl") {
+                let imageView = control.subviews.first(
+                    where: { $0 is UIImageView}) as? UIImageView
+                imageView?.image = UIImage(
+                    named: isSelected ? "backgroundBlue" : "backgroundWhite")?.imageResized(to: CGSize(width: 25,
+                                                                                                       height: 25))
+            }
+        }
+        super.layoutSubviews()
+    }
+
     // MARK: - Private
     private func setupСonstraint() {
-        view.topAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.topAnchor,
-            constant: +2
-        ).isActive = true
-        view.bottomAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
-            constant: -3
-        ).isActive = true
-        view.leadingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
-            constant: 0
-        ).isActive = true
-        view.trailingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
-            constant: 0
-        ).isActive = true
-
         note.topAnchor.constraint(
-            equalTo: view.topAnchor,
+            equalTo: contentView.topAnchor,
             constant: +10
         ).isActive = true
         note.bottomAnchor.constraint(
@@ -129,5 +117,14 @@ class ListTableViewCell: UITableViewCell {
         note.text = model.title
         message.text = model.text
         time.text = model.date
+    }
+}
+
+// MARK: - Private
+private extension UIImage {
+    func imageResized(to size: CGSize) -> UIImage? {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
     }
 }
