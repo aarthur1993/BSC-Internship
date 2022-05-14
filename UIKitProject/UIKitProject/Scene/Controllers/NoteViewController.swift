@@ -79,10 +79,10 @@ class NoteViewController: UIViewController {
         text.delegate = self
         notes.delegate = self
         text.adjustableForKeyboard()
-        constraintNote()
-        constraintText()
-        constraintTime()
-        constraintScroll()
+        setupConstraintNote()
+        setupConstraintText()
+        setupConstraintTime()
+        setupConstraintScroll()
         dateTextTitle()
 
         buttonRightSetting()
@@ -106,7 +106,7 @@ class NoteViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func constraintScroll() {
+    private func setupConstraintScroll() {
         scrollView.topAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.topAnchor
         ).isActive = true
@@ -122,7 +122,7 @@ class NoteViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func constraintTime() {
+    private func setupConstraintTime() {
         time.topAnchor.constraint(
             equalTo: scrollView.topAnchor,
             constant: +15
@@ -142,7 +142,7 @@ class NoteViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func constraintNote() {
+    private func setupConstraintNote() {
         notes.topAnchor.constraint(
             equalTo: time.topAnchor,
             constant: +60
@@ -162,7 +162,7 @@ class NoteViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func constraintText() {
+    private func setupConstraintText() {
         text.topAnchor.constraint(
             equalTo: notes.topAnchor,
             constant: +60
