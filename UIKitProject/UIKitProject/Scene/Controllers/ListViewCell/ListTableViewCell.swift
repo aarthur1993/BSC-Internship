@@ -9,6 +9,18 @@ import UIKit
 
 class ListTableViewCell: UITableViewCell {
 
+    private var NSLayoutConstraint: NSLayoutConstraint?
+
+    var checkBoxClosure: ((Bool) -> Void)?
+
+    private var checkBox: UIButton = {
+        let checkBox = UIButton()
+        checkBox.translatesAutoresizingMaskIntoConstraints = false
+        checkBox.setImage(UIImage(named: "backgroundWhite"), for: .normal)
+        checkBox.setImage(UIImage(named: "backgroundBlue"), for: .selected)
+        return checkBox
+    }()
+
     private var note: UILabel = {
         let note = UILabel()
         note.translatesAutoresizingMaskIntoConstraints = false
@@ -42,37 +54,40 @@ class ListTableViewCell: UITableViewCell {
         contentView.layer.cornerRadius = 16
         contentView.layer.backgroundColor =  UIColor.white.cgColor
 
+        contentView.addSubview(checkBox)
         contentView.addSubview(note)
         contentView.addSubview(message)
         contentView.addSubview(time)
 
-        setupСonstraint()
+        checkBox.addTarget(self, action: #selector(toggleCheckboxSelection), for: .touchUpInside)
+
+        setupСonstraintCheckBox()
+        setupConstraintNote()
+        setupConstraintMessage()
+        setupConstraintTime()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
-    override func layoutSubviews() {
-        print("\(subviews)")
-        for control in subviews {
-            if type(of: control) === NSClassFromString("UITableViewCellEditControl") {
-                let imageView = control.subviews.first(
-                    where: { $0 is UIImageView}) as? UIImageView
-                imageView?.image = UIImage(
-                    named: isSelected ? "backgroundBlue" : "backgroundWhite")?.imageResized(to: CGSize(width: 25,
-                                                                                                       height: 25))
-            }
-        }
-        super.layoutSubviews()
+    // MARK: - Private
+    private func setupСonstraintCheckBox() {
+        checkBox.topAnchor.constraint(
+            equalTo: contentView.topAnchor,
+            constant: +35
+        ).isActive = true
+        checkBox.bottomAnchor.constraint(
+            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
+            constant: -35
+        ).isActive = true
+        NSLayoutConstraint =  checkBox.trailingAnchor.constraint(
+            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 0)
+        NSLayoutConstraint?.isActive = true
     }
 
     // MARK: - Private
-    private func setupСonstraint() {
+    private func setupConstraintNote() {
         note.topAnchor.constraint(
             equalTo: contentView.topAnchor,
             constant: +10
@@ -82,10 +97,13 @@ class ListTableViewCell: UITableViewCell {
             constant: -20
         ).isActive = true
         note.leadingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+            equalTo: checkBox.trailingAnchor,
             constant: 20
         ).isActive = true
+    }
 
+    // MARK: - Private
+    private func setupConstraintMessage() {
         message.topAnchor.constraint(
             equalTo: note.topAnchor,
             constant: +25
@@ -95,10 +113,13 @@ class ListTableViewCell: UITableViewCell {
             constant: -30
         ).isActive = true
         message.leadingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+            equalTo: checkBox.trailingAnchor,
             constant: 20
         ).isActive = true
+    }
 
+    // MARK: - Private
+    private func setupConstraintTime() {
         time.topAnchor.constraint(
             equalTo: message.safeAreaLayoutGuide.topAnchor,
             constant: +30
@@ -108,23 +129,28 @@ class ListTableViewCell: UITableViewCell {
             constant: -10
         ).isActive = true
         time.leadingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+            equalTo: checkBox.trailingAnchor,
             constant: 20
         ).isActive = true
+    }
+
+    // MARK: - Private
+    @objc func toggleCheckboxSelection() {
+        checkBoxClosure?(!checkBox.isSelected)
+        checkBox.isSelected = !checkBox.isSelected
+    }
+
+    func showCheckbox(_ show: Bool) {
+        checkBox.isSelected = false
+        UIView.animate(withDuration: 1) {
+            self.NSLayoutConstraint?.constant = show ? 40 : 0
+            self.layoutIfNeeded()
+        }
     }
 
     func update(model: Note) {
         note.text = model.title
         message.text = model.text
         time.text = model.date
-    }
-}
-
-// MARK: - Private
-private extension UIImage {
-    func imageResized(to size: CGSize) -> UIImage? {
-        return UIGraphicsImageRenderer(size: size).image { _ in
-            draw(in: CGRect(origin: .zero, size: size))
-        }
     }
 }

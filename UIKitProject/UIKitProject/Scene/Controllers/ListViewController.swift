@@ -15,7 +15,7 @@ class ListViewController: UIViewController {
 
     private var note = [Note]()
 
-    private var indexPathsSelect: [IndexPath] = []
+    private var indexPathSelect: [IndexPath] = []
 
     private let barButton = UIBarButtonItem()
 
@@ -70,12 +70,11 @@ class ListViewController: UIViewController {
         setupConstraintPlusButtonClean()
 
         settingBarButtonItem()
-        plusButtonAnimatedUP()
+        setupPlusButtonAnimatedUP()
 
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsMultipleSelectionDuringEditing = true
 
     }
 
@@ -83,89 +82,89 @@ class ListViewController: UIViewController {
     private func settingBarButtonItem() {
         barButton.title = "Выбрать"
         barButton.target  = self
-        barButton.action = #selector(settingAnimationBarButtonTap)
+        barButton.action = #selector(setupAnimationBarButtonTap)
         navigationItem.rightBarButtonItem = barButton
     }
 
     // MARK: - Private
-    @objc private func settingAnimationBarButtonTap() {
+    private func cellForEach(show: Bool) {
+        (0..<note.count).forEach {
+            if let cell = tableView.cellForRow(at: IndexPath(item: $0, section: 0)) as? ListTableViewCell {
+                print("print: \(show) \($0)")
+                cell.showCheckbox(show)
+            }
+        }
+    }
+
+    // MARK: - Private
+    @objc private func setupAnimationBarButtonTap() {
         if  barButton.title == "Выбрать" {
             barButton.title = "Готово"
 
-            barButton.style =  UIBarButtonItem.Style.plain
-            tableView.setEditing(true, animated: true)
-
-            plusButtonTransitionLeft()
-            plusButtonTransitionLefts()
+            setupPlusButtonTransitionLeft()
+            setupPlusButtonCleanTransitionLeft()
+            cellForEach(show: true)
 
         } else if barButton.title == "Готово" {
             barButton.title = "Выбрать"
 
-            if indexPathsSelect.isEmpty {
-                indexPathsSelect.removeAll()
+            if indexPathSelect.isEmpty {
+                alert()
+                print("indexPathsSelect.isEmpty")
+
+            } else if !indexPathSelect.isEmpty {
+                indexPathSelect.removeAll()
+                print("!indexPathsSelect.isEmpty")
             }
-            allertSetting()
+                setupPlusButtonTransitionRight()
+                setupPlusButtonCleanTransitionRight()
 
-            tableView.setEditing(false, animated: true)
-
-            barButton.style = UIBarButtonItem.Style.plain
-
-            plusButtonTransitionRight()
-            plusButtonTransitionRights()
+                cellForEach(show: false)
         }
     }
-
     // MARK: - Private
-    private func allertSetting() {
-        if tableView.isEditing == true {
-            if indexPathsSelect.isEmpty {
-                alertMessage()
-            }
-        }
-    }
-
-    // MARK: - Private
-    private func alertMessage() {
+    private func alert() {
         let alertController = UIAlertController(title: "Вы не выбрали ни одной заметки",
                                                 message: "",
                                                 preferredStyle: .actionSheet)
         let action = UIAlertAction(title: "Ок", style: .default) { (_) in
-            if !self.note.isEmpty {
-                if self.tableView.isEditing == false {
-                    self.tableView.setEditing(true, animated: true)
-                    self.barButton.title = "Готово"
-                    self.tableView.isEditing = true
-                    self.plusButtonTransitionLeft()
-                    self.plusButtonTransitionLefts()
-                }
-            }
+
+            self.barButton.title = "Готово"
+            self.cellForEach(show: true)
+            self.setupPlusButtonTransitionLeft()
+            self.setupPlusButtonCleanTransitionLeft()
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
-    }
+}
 
     // MARK: - Private
     @objc private func deleteRow(_ cells: UIButton) {
-        indexPathsSelect.forEach {
-            if indexPathsSelect.contains($0) {
-                let getIndex = indexPathsSelect.firstIndex(of: $0)
+        indexPathSelect.forEach {
+            if indexPathSelect.contains($0) {
+                let getIndex = indexPathSelect.firstIndex(of: $0)
 
-                indexPathsSelect.remove(at: getIndex ?? .zero)
+                indexPathSelect.remove(at: getIndex ?? .zero)
             } else {
-                indexPathsSelect.append($0)
+                indexPathSelect.append($0)
             }
             tableView.reloadRows(at: [$0], with: UITableView.RowAnimation.automatic)
 
             if !note.isEmpty {
                 note.remove(at: $0.row)
+                self.barButton.title = "Выбрать"
+                self.tableView.isEditing = false
+                self.setupPlusButtonTransitionRight()
+                self.setupPlusButtonCleanTransitionRight()
                 tableView.deleteRows(at: [IndexPath.init(row: $0.row, section: 0)], with: .fade)
                 tableView.reloadData()
+                cellForEach(show: false)
             }
         }
     }
 
     // MARK: - Private
-    private func plusButtonTransitionLeft() {
+    private func setupPlusButtonTransitionLeft() {
         UIView.transition(
             with: plusButton,
             duration: 1,
@@ -177,7 +176,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func plusButtonTransitionLefts() {
+    private func setupPlusButtonCleanTransitionLeft() {
         UIView.transition(
             with: plusButtonClean,
             duration: 1,
@@ -191,7 +190,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func plusButtonTransitionRight() {
+    private func setupPlusButtonTransitionRight() {
         UIView.transition(
             with: plusButton,
             duration: 1,
@@ -206,7 +205,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private
-    private func plusButtonTransitionRights() {
+    private func setupPlusButtonCleanTransitionRight() {
         UIView.transition(
             with: plusButtonClean,
             duration: 1,
@@ -217,7 +216,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private
-    @objc private func plusButtonAnimatedUP() {
+    @objc private func setupPlusButtonAnimatedUP() {
         UIView.animate(
             withDuration: 2.5,
             delay: 0,
@@ -233,7 +232,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private
-    @objc private func plusButtonAnimatedAddKeyFrame() {
+    @objc private func setupPlusButtonAnimatedAddKeyFrame() {
         UIView.addKeyframe(
             withRelativeStartTime: 0,
             relativeDuration: 0.25) { [weak self] in
@@ -270,7 +269,7 @@ class ListViewController: UIViewController {
                 options: [],
                 animations: { [weak self] in
                     guard let self = self else { return }
-                    self.plusButtonAnimatedAddKeyFrame()
+                    self.setupPlusButtonAnimatedAddKeyFrame()
                 },
                 completion: nil)
 
@@ -393,13 +392,24 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
 
         cell.update(model: note[indexPath.row])
 
+        cell.checkBoxClosure = { select in
+            if select {
+                self.indexPathSelect.append(indexPath)
+                print("print: select \(self.indexPathSelect)")
+            } else {
+                self.indexPathSelect = self.indexPathSelect.filter { $0 != indexPath }
+                print("print: deselect \(self.indexPathSelect)")
+            }
+        }
+
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.indexPathsSelect.append(indexPath)
+        self.indexPathSelect.append(indexPath)
 
-        if tableView.isEditing == false {
+        if !indexPathSelect.isEmpty {
+
             let noteView = NoteViewController()
             noteView.delegateProtocol = self
 
@@ -410,10 +420,10 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                             message: index.text ?? "",
                             data: index.date )
 
-            self.indexPathsSelect.removeAll()
-
+            self.indexPathSelect.removeAll()
+            print("indexPathsSelect.isEmpty")
             navigationController?.pushViewController(noteView, animated: true)
-        }
+         }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -436,16 +446,5 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         configuration.performsFirstActionWithFullSwipe = false
 
         return configuration
-    }
-
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-
-        return true
-    }
-
-    func tableView(_ tableView: UITableView,
-                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-
-        return UITableViewCell.EditingStyle.none
     }
 }
