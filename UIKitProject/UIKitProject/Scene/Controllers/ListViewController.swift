@@ -431,38 +431,38 @@ extension ListViewController {
 
 // MARK: - Constants
 extension ListViewController {
-    
+
     private enum Constants {
         static let navigationTitleText = "Заметки"
         static let navigationBackgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        
+
         static let tableViewColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        
+
         static let plusButtonCleanFont = UIFont.systemFont(ofSize: 37, weight: UIFont.Weight.regular)
         static let plusButtonCleanBackgroundcolor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1)
         static let plusButtonCornerRadius: CGFloat = 24
         static let plusButtonCleanImage = "Vector"
-        
+
         static let plusButtonFont = UIFont.systemFont(ofSize: 37, weight: UIFont.Weight.regular)
         static let plusButtonBackgroundColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1)
         static let plusButtonCleanCornerRadius: CGFloat = 24
         static let plusButtonImage = "+"
-        
+
         static let barButtonTitleSelect = "Выбрать"
         static let barButtonTitleDone = "Готово"
-        
+
         static let alertActionTitle = "Oк"
         static let alertControllerTitle = "Вы не выбрали ни одной заметки"
-        
+
         static let deleteActionImage = "korzina"
         static let deleteActionBackgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        
+
         // MARK: - Constraint constants
         static let tableViewAnchor: CGFloat = +20
         static let tableViewRightAnchor: CGFloat = -20
-        
+
         static let rightAnchor: CGFloat = -5
-        
+
         static let buttonWightHeightAnchor: CGFloat = +50
         static let buttonBottomAnchor: CGFloat = -65
     }
