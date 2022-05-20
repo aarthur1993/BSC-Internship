@@ -18,7 +18,6 @@ class NoteViewController: UIViewController {
     private let label: UILabel = {
         let lab = UILabel()
         lab.isHidden = true
-        lab.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
         lab.textColor = .black
         return lab
     }()
@@ -29,47 +28,41 @@ class NoteViewController: UIViewController {
         return scroll
     }()
 
-    private var time: UITextField = {
-        let textTime = UITextField()
-        textTime.translatesAutoresizingMaskIntoConstraints = false
-        textTime.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
-        textTime.textAlignment = .center
-        textTime.textColor = .red
-        textTime.isUserInteractionEnabled = false
-        textTime.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        textTime.textColor = UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
-        return textTime
-    }()
-
     private var notes: UITextField = {
         let textTitle = UITextField()
         textTitle.translatesAutoresizingMaskIntoConstraints = false
-        textTitle.placeholder = "Введите название"
-        textTitle.frame = CGRect(x: 10, y: 10, width: 300, height: 300)
-        textTitle.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 1254/255, alpha: 1)
+        textTitle.placeholder = Constants.notePlacholder
+        textTitle.backgroundColor = Constants.noteLabelBackgroundColor
         textTitle.textAlignment = .left
-        textTitle.font = UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.medium)
-        textTitle.text = ""
+        textTitle.font = Constants.noteLabelFont
         return textTitle
     }()
 
     private var text: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textColor = UIColor.black
-        textView.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textView.textAlignment = .center
+        textView.textColor = Constants.textLabelColor
         textView.textAlignment = .left
         textView.becomeFirstResponder()
-        textView.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
+        textView.font = Constants.textLabelFont
         return textView
+    }()
+
+    private var time: UITextField = {
+        let textTime = UITextField()
+        textTime.translatesAutoresizingMaskIntoConstraints = false
+        textTime.textAlignment = .center
+        textTime.isUserInteractionEnabled = false
+        textTime.font = Constants.timeLabelFont
+        textTime.textColor = Constants.timeLabelColor
+        return textTime
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = false
-        view.backgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+        view.backgroundColor = Constants.viewBackgroundColor
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.navigationButtonImage),
                                                            style: .done, target: self,
                                                            action: #selector(backToVC))
         view.addSubview(scrollView)
@@ -90,7 +83,7 @@ class NoteViewController: UIViewController {
 
     // MARK: - Private
     private func buttonRightSetting() {
-        barButton.title = "Готово"
+        barButton.title = Constants.barbuttonText
         barButton.isEnabled = false
         barButton.target = self
         barButton.action = #selector(endEdit)
@@ -125,19 +118,19 @@ class NoteViewController: UIViewController {
     private func setupConstraintTime() {
         time.topAnchor.constraint(
             equalTo: scrollView.topAnchor,
-            constant: +15
+            constant: Constants.timeTopAnchor
         ).isActive = true
         time.bottomAnchor.constraint(
             equalTo: notes.bottomAnchor,
-            constant: -60
+            constant: Constants.timeBottomAnchor
         ).isActive = true
         time.leftAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
-            constant: 20
+            constant: Constants.constantLeft
         ).isActive = true
         time.rightAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
-            constant: -20
+            constant: Constants.constantRight
         ).isActive = true
     }
 
@@ -145,19 +138,19 @@ class NoteViewController: UIViewController {
     private func setupConstraintNote() {
         notes.topAnchor.constraint(
             equalTo: time.topAnchor,
-            constant: +60
+            constant: Constants.noteTopAnchor
         ).isActive = true
         notes.bottomAnchor.constraint(
             equalTo: text.bottomAnchor,
-            constant: -450
+            constant: Constants.noteBottomAnchor
         ).isActive = true
         notes.leftAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
-            constant: +20
+            constant: Constants.constantLeft
         ).isActive = true
         notes.rightAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
-            constant: -20
+            constant: Constants.constantRight
         ).isActive = true
     }
 
@@ -165,33 +158,33 @@ class NoteViewController: UIViewController {
     private func setupConstraintText() {
         text.topAnchor.constraint(
             equalTo: notes.topAnchor,
-            constant: +60
+            constant: Constants.textTopAnchor
         ).isActive = true
         text.bottomAnchor.constraint(
             equalTo: scrollView.bottomAnchor,
-            constant: -20
+            constant: Constants.textBottomAnchor
         ).isActive = true
         text.leftAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leftAnchor,
-            constant: +20
+            constant: Constants.constantLeft
         ).isActive = true
         text.rightAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.rightAnchor,
-            constant: -20
+            constant: Constants.constantRight
         ).isActive = true
     }
 
     // MARK: - Private
     private func dateTextTitle() {
         let dateFormater = DateFormatter()
-        dateFormater.dateFormat = "dd.MM.yyyy EEEE HH:mm"
+        dateFormater.dateFormat = Constants.dateFormat
         time.text = dateFormater.string(from: Date())
     }
 
     // MARK: - Private
     @objc private func backToVC(send: UIButton) {
         let dateFormater = DateFormatter()
-        dateFormater.dateFormat = "dd.MM.yyyy"
+        dateFormater.dateFormat = Constants.dateForm
         time.text = dateFormater.string(from: Date())
         delegateProtocol?.fetchDataView(id: identifire ?? UUID(),
                                         time: time.text ?? "",
@@ -206,5 +199,42 @@ class NoteViewController: UIViewController {
         notes.text = note
         text.text = message
         time.text = data
+    }
+}
+
+// MARK: - Constants
+extension NoteViewController {
+    private enum Constants {
+
+        static let viewBackgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
+        static let navigationButtonImage = "chevron.left"
+
+        static let barbuttonText = "Готово"
+
+        static let dateFormat = "dd.MM.yyyy EEEE HH:mm"
+        static let dateForm = "dd.MM.yyyy"
+
+        static let notePlacholder = "Введите название"
+        static let noteLabelBackgroundColor = UIColor(red: 249/255, green: 250/255, blue: 1254/255, alpha: 1)
+        static let noteLabelFont = UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.medium)
+
+        static let textLabelColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        static let textLabelFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.regular)
+
+        static let timeLabelFont = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        static let timeLabelColor =  UIColor(red: 172/255, green: 172/255, blue: 172/255, alpha: 1)
+
+        // MARK: - Constraint constants
+        static let timeTopAnchor: CGFloat = +15
+        static let timeBottomAnchor: CGFloat = -60
+
+        static let textBottomAnchor: CGFloat = -20
+        static let textTopAnchor: CGFloat = +60
+
+        static let noteTopAnchor: CGFloat = +60
+        static let noteBottomAnchor: CGFloat = -450
+
+        static let constantLeft: CGFloat = +20
+        static let constantRight: CGFloat = -20
     }
 }

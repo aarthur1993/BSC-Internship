@@ -50,10 +50,11 @@ extension UITextView {
         if notification.name == UIResponder.keyboardWillHideNotification {
             contentInset = .zero
         } else {
-            contentInset = UIEdgeInsets(top: 0,
-                                        left: 0,
-                                        bottom: keyboardViewEndFrame.height - safeAreaInsets.bottom,
-                                        right: 0)
+            contentInset = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: keyboardViewEndFrame.height - safeAreaInsets.bottom,
+                right: 0)
         }
         scrollIndicatorInsets = contentInset
         scrollRangeToVisible(selectedRange)

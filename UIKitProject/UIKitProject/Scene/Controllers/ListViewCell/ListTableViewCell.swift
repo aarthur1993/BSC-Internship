@@ -16,8 +16,8 @@ class ListTableViewCell: UITableViewCell {
     private var checkBox: UIButton = {
         let checkBox = UIButton()
         checkBox.translatesAutoresizingMaskIntoConstraints = false
-        checkBox.setImage(UIImage(named: "backgroundWhite"), for: .normal)
-        checkBox.setImage(UIImage(named: "backgroundBlue"), for: .selected)
+        checkBox.setImage(UIImage(named: Constant.checkBoxImageNormal), for: .normal)
+        checkBox.setImage(UIImage(named: Constant.checkBoxImageSelected), for: .selected)
         return checkBox
     }()
 
@@ -26,15 +26,15 @@ class ListTableViewCell: UITableViewCell {
         note.translatesAutoresizingMaskIntoConstraints = false
         note.textAlignment = .center
         note.textColor = .black
-        note.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+        note.font = Constant.noteFont
         return note
     }()
 
     private var message: UILabel = {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
-        message.textColor = UIColor(red: 0.675, green: 0.675, blue: 0.675, alpha: 1)
-        message.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
+        message.textColor = Constant.messageTextColor
+        message.font = Constant.messageFont
         message.textAlignment = .center
         return message
     }()
@@ -44,15 +44,14 @@ class ListTableViewCell: UITableViewCell {
         time.translatesAutoresizingMaskIntoConstraints = false
         time.textAlignment = .center
         time.textColor = .black
-        time.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
+        time.font = Constant.timeFont
         return time
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundConfiguration = UIBackgroundConfiguration.clear()
-        contentView.layer.cornerRadius = 16
-        contentView.layer.backgroundColor =  UIColor.white.cgColor
+        contentView.layer.cornerRadius = Constant.contentViewCornerRadius
+        contentView.layer.backgroundColor =  Constant.contentViewBackgroundColor
 
         contentView.addSubview(checkBox)
         contentView.addSubview(note)
@@ -71,75 +70,6 @@ class ListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Private
-    private func setupСonstraintCheckBox() {
-        checkBox.topAnchor.constraint(
-            equalTo: contentView.topAnchor,
-            constant: +35
-        ).isActive = true
-        checkBox.bottomAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
-            constant: -35
-        ).isActive = true
-        NSLayoutConstraint =  checkBox.trailingAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 0)
-        NSLayoutConstraint?.isActive = true
-    }
-
-    // MARK: - Private
-    private func setupConstraintNote() {
-        note.topAnchor.constraint(
-            equalTo: contentView.topAnchor,
-            constant: +10
-        ).isActive = true
-        note.bottomAnchor.constraint(
-            equalTo: message.safeAreaLayoutGuide.bottomAnchor,
-            constant: -20
-        ).isActive = true
-        note.leadingAnchor.constraint(
-            equalTo: checkBox.trailingAnchor,
-            constant: 20
-        ).isActive = true
-    }
-
-    // MARK: - Private
-    private func setupConstraintMessage() {
-        message.topAnchor.constraint(
-            equalTo: note.topAnchor,
-            constant: +25
-        ).isActive = true
-        message.bottomAnchor.constraint(
-            equalTo: time.safeAreaLayoutGuide.bottomAnchor,
-            constant: -30
-        ).isActive = true
-        message.leadingAnchor.constraint(
-            equalTo: checkBox.trailingAnchor,
-            constant: 20
-        ).isActive = true
-    }
-
-    // MARK: - Private
-    private func setupConstraintTime() {
-        time.topAnchor.constraint(
-            equalTo: message.safeAreaLayoutGuide.topAnchor,
-            constant: +30
-        ).isActive = true
-        time.bottomAnchor.constraint(
-            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
-            constant: -10
-        ).isActive = true
-        time.leadingAnchor.constraint(
-            equalTo: checkBox.trailingAnchor,
-            constant: 20
-        ).isActive = true
-    }
-
-    // MARK: - Private
-    @objc func toggleCheckboxSelection() {
-        checkBoxClosure?(!checkBox.isSelected)
-        checkBox.isSelected = !checkBox.isSelected
-    }
-
     func showCheckbox(_ show: Bool) {
         checkBox.isSelected = false
         UIView.animate(withDuration: 1) {
@@ -152,5 +82,114 @@ class ListTableViewCell: UITableViewCell {
         note.text = model.title
         message.text = model.text
         time.text = model.date
+    }
+}
+
+// MARK: - Private Methods
+extension ListTableViewCell {
+    // MARK: - Private
+    private func setupСonstraintCheckBox() {
+        checkBox.topAnchor.constraint(
+            equalTo: contentView.topAnchor,
+            constant: Constant.checkBoxTopAnchor
+        ).isActive = true
+        checkBox.bottomAnchor.constraint(
+            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
+            constant: Constant.checkBoxBottomAnchor
+        ).isActive = true
+        NSLayoutConstraint =  checkBox.trailingAnchor.constraint(
+            equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+            constant: Constant.checkBoxTrailingAnchor)
+        NSLayoutConstraint?.isActive = true
+    }
+
+    // MARK: - Private
+    private func setupConstraintNote() {
+        note.topAnchor.constraint(
+            equalTo: contentView.topAnchor,
+            constant: Constant.noteLabelTopAnchor
+        ).isActive = true
+        note.bottomAnchor.constraint(
+            equalTo: message.safeAreaLayoutGuide.bottomAnchor,
+            constant: Constant.noteLabelBottomAnchor
+        ).isActive = true
+        note.leadingAnchor.constraint(
+            equalTo: checkBox.trailingAnchor,
+            constant: Constant.leadingAnchorConstants
+        ).isActive = true
+    }
+
+    // MARK: - Private
+    private func setupConstraintMessage() {
+        message.topAnchor.constraint(
+            equalTo: note.topAnchor,
+            constant: Constant.messageLabelTopAnchor
+        ).isActive = true
+        message.bottomAnchor.constraint(
+            equalTo: time.safeAreaLayoutGuide.bottomAnchor,
+            constant: Constant.messageLabelBottomAnchor
+        ).isActive = true
+        message.leadingAnchor.constraint(
+            equalTo: checkBox.trailingAnchor,
+            constant: Constant.leadingAnchorConstants
+        ).isActive = true
+    }
+
+    // MARK: - Private
+    private func setupConstraintTime() {
+        time.topAnchor.constraint(
+            equalTo: message.safeAreaLayoutGuide.topAnchor,
+            constant: Constant.timeLabelTopAnchor
+        ).isActive = true
+        time.bottomAnchor.constraint(
+            equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
+            constant: Constant.timeLabelBottomAnchor
+        ).isActive = true
+        time.leadingAnchor.constraint(
+            equalTo: checkBox.trailingAnchor,
+            constant: Constant.leadingAnchorConstants
+        ).isActive = true
+    }
+
+    // MARK: - Private
+    @objc private func toggleCheckboxSelection() {
+        checkBoxClosure?(!checkBox.isSelected)
+        checkBox.isSelected = !checkBox.isSelected
+    }
+}
+
+// MARK: - Constants
+extension ListTableViewCell {
+
+    private enum Constant {
+
+        static let contentViewBackgroundColor = UIColor.white.cgColor
+        static let contentViewCornerRadius: CGFloat = 16
+
+        static let checkBoxImageNormal = "backgroundWhite"
+        static let checkBoxImageSelected = "backgroundBlue"
+
+        static let noteFont = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+
+        static let messageTextColor = UIColor(red: 0.675, green: 0.675, blue: 0.675, alpha: 1)
+        static let messageFont = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
+
+        static let timeFont = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
+
+        // MARK: - Constraint constants
+        static let checkBoxTopAnchor: CGFloat = +35
+        static let checkBoxBottomAnchor: CGFloat = -35
+        static let checkBoxTrailingAnchor: CGFloat = 0
+
+        static let noteLabelTopAnchor: CGFloat = +10
+        static let noteLabelBottomAnchor: CGFloat = -20
+
+        static let messageLabelTopAnchor: CGFloat = +25
+        static let messageLabelBottomAnchor: CGFloat = -30
+
+        static let timeLabelTopAnchor: CGFloat = +30
+        static let timeLabelBottomAnchor: CGFloat = -10
+
+        static let leadingAnchorConstants: CGFloat = 20
     }
 }
