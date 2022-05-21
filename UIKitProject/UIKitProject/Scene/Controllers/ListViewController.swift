@@ -13,6 +13,9 @@ protocol ListViewControllerDataSource: AnyObject {
 
 class ListViewController: UIViewController {
 
+    let worker = Worker()
+    var arrayWelcome = Welcome()
+
     private var note = [Note]()
 
     private var indexPathSelect: [IndexPath] = []
@@ -75,6 +78,8 @@ class ListViewController: UIViewController {
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.dataSource = self
         tableView.delegate = self
+
+        fetchData()
     }
 }
 
@@ -184,6 +189,20 @@ extension ListViewController {
         barButton.target  = self
         barButton.action = #selector(setupAnimationBarButtonTap)
         navigationItem.rightBarButtonItem = barButton
+    }
+
+    private func fetchData() {
+        worker.fetch { welcome in
+            welcome.forEach { welcome in
+                let timeInterval = TimeInterval(welcome.date)
+                let dateFormatter = DateFormatter()
+                let date = Date(timeIntervalSince1970: timeInterval)
+                dateFormatter.dateFormat = Constants.dateFormat
+                let dataString = dateFormatter.string(from: date)
+
+                self.note.append(Note(id: UUID(), title: welcome.header, text: welcome.text, date: dataString))
+            }
+        }
     }
 
     private func cellForEach(show: Bool) {
@@ -435,6 +454,8 @@ extension ListViewController {
     private enum Constants {
         static let navigationTitleText = "Заметки"
         static let navigationBackgroundColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
+
+        static let dateFormat = "dd.MM.yyyy"
 
         static let tableViewColor = UIColor(red: 249/255, green: 250/255, blue: 254/255, alpha: 100)
 
